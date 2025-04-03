@@ -23,16 +23,17 @@ int main(int argc, char** argv) {
     cmd.add_bytes('q', "numQueries", Contender::numQueries, "Number of queries to perform");
     cmd.add_bytes('t', "numThreads", Contender::numThreads, "Number of threads to use for construction");
     cmd.add_flag('T', "skipTests", Contender::skipTests, "Skip testing PHF for validity");
+    cmd.add_bytes('s', "seed", Contender::seed, "Seed for pseudo-number generator");
 
     if (!cmd.process(argc, argv)) {
         return 1;
     }
 
-    {ConsensusContender<256, 0.1>(N).run();}
-    {ConsensusContender<512, 0.03>(N).run();}
+    //{ConsensusContender<256, 0.1>(N).run();}
+    //{ConsensusContender<512, 0.03>(N).run();}
 
-    {FiPSContender<>(N, 1.5).run();}
-    {FiPSContender<>(N, 2.0).run();}
+    //{FiPSContender<>(N, 1.5).run();}
+    //{FiPSContender<>(N, 2.0).run();}
 
     {RustPhastContender(N, 6, 320).run();}
     {RustPhastContender(N, 7, 370).run();}
@@ -68,7 +69,7 @@ int main(int argc, char** argv) {
     {RustFmphContender(N, 1.0).run();}
     {RustFmphContender(N, 2.0).run();}
 
-    {ChdContender(N, 1.0, 1.0, 3, true).run();}
+    //{ChdContender(N, 1.0, 1.0, 3, true).run();}
 
     {BipartiteShockHashFlatContender<64>(N).run();}
 

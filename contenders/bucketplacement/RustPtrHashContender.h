@@ -5,7 +5,7 @@
 extern "C" {
     void *createPtrHashStruct();
     void constructPtrHash(void *rustStruct, void *keysStruct, uint64_t variant, double lambda);
-    uint64_t queryPtrHash(void *rustStruct, const char *key, size_t length);
+    uint64_t queryPtrHash(void *rustStruct, void *keysStruct, size_t index);
     void queryPtrHashAll(void *rustStruct, void *keysStruct);
     size_t sizePtrHash(void *rustStruct);
     void destroyPtrHashStruct(void *rustStruct);
@@ -39,8 +39,8 @@ class RustPtrHashContender : public RustContender {
                 + " lambda=" + std::to_string(lambda);
         }
 
-        void construct(void *keys) override {
-            constructPtrHash(rustStruct, keys, variant, lambda);
+        void construct() override {
+            constructPtrHash(rustStruct, keysRustWrapper, variant, lambda);
         }
 
         size_t sizeBits() override {
@@ -51,10 +51,8 @@ class RustPtrHashContender : public RustContender {
             queryPtrHashAll(rustStruct, keys);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            auto x = [&] (std::string &key) {
-                return queryPtrHash(rustStruct, key.c_str(), key.length()); };
-            doPerformTest(keys, x);
+        size_t keyValue(size_t key_index) override {
+            return queryPtrHash(rustStruct, keysRustWrapper, key_index);
         }
 };
 

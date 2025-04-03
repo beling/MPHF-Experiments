@@ -23,11 +23,11 @@ class RecSplitContender : public Contender {
                   + " b=" + std::to_string(bucketSize);
         }
 
-        void beforeConstruction(const std::vector<std::string> &keys) override {
+        void beforeConstruction() override {
             (void) keys;
         }
 
-        void construct(const std::vector<std::string> &keys) override {
+        void construct() override {
             recSplit = new sux::function::RecSplit<l>(keys, bucketSize);
         }
 
@@ -35,12 +35,12 @@ class RecSplitContender : public Contender {
             return recSplit->bitCount();
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             doPerformQueries(keys, *recSplit);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            doPerformTest(keys, *recSplit);
+        size_t keyValue(size_t key_index) override {
+            return (*recSplit)(keys[key_index]);
         }
 };
 

@@ -35,13 +35,13 @@ class BBHashContender : public Contender {
                 + " perc_elem_loaded=" + std::to_string(perc_elem_loaded);
         }
 
-        void beforeConstruction(const std::vector<std::string> &keys) override {
+        void beforeConstruction() override {
             for (const std::string &s : keys) {
                 mhcs.emplace_back(bytehamster::util::MurmurHash64(s));
             }
         }
 
-        void construct(const std::vector<std::string> &keys) override {
+        void construct() override {
             (void) keys;
             bbhash = new boomphf::mphf<u_int64_t,hasher_t>(mhcs.size(), mhcs,
                     /* num_thread */ numThreads, /* gamma */ gamma, /* writeEach */ true,
@@ -52,18 +52,15 @@ class BBHashContender : public Contender {
             return bbhash->totalBitSize();
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             auto x = [&] (std::string &key) {
                 return bbhash->lookup(bytehamster::util::MurmurHash64(key));
             };
             doPerformQueries(keys, x);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            auto x = [&] (std::string &key) {
-                return bbhash->lookup(bytehamster::util::MurmurHash64(key));
-            };
-            doPerformTest(keys, x);
+        size_t keyValue(size_t key_index) override {
+            return bbhash->lookup(bytehamster::util::MurmurHash64(keys[key_index]));
         }
 };
 

@@ -27,11 +27,7 @@ class FchContender : public Contender {
                     + " c=" + std::to_string(c);
         }
 
-        void beforeConstruction(const std::vector<std::string> &keys) override {
-            (void) keys;
-        }
-
-        void construct(const std::vector<std::string> &keys) override {
+        void construct() override {
             builder.build(fchFunction, keys);
         }
 
@@ -39,12 +35,12 @@ class FchContender : public Contender {
             return fchFunction.num_bits();
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             doPerformQueries(keys, fchFunction);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            doPerformTest(keys, fchFunction);
+        size_t keyValue(size_t key_index) override {
+            return fchFunction(keys[key_index]);
         }
 };
 

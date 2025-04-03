@@ -30,7 +30,7 @@ class SicHashContender : public Contender {
                    + " bucketSize=" + std::to_string(config.smallTableSize);
         }
 
-        void construct(const std::vector<std::string> &keys) override {
+        void construct() override {
             perfectHashing = new sichash::PartitionedSicHash
                     <minimal, ribbonWidth, minimalFanoLowerBits>(keys, config, numThreads);
         }
@@ -39,12 +39,12 @@ class SicHashContender : public Contender {
             return perfectHashing->spaceUsage();
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             doPerformQueries(keys, *perfectHashing);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            doPerformTest(keys, *perfectHashing);
+        size_t keyValue(size_t key_index) override {
+            return (*perfectHashing)(keys[key_index]);
         }
 };
 

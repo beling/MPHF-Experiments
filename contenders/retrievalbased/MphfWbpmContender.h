@@ -25,7 +25,7 @@ class MphfWbpmContender : public Contender {
                 + " efficiency=" + std::to_string(sParams.xsfp.fEfficiency);
         }
 
-        void construct(const std::vector<std::string> &keys) override {
+        void construct() override {
             MPHFBuilder *mphfb = MPHFBuilderAlloc(N);
             for (const std::string &key : keys) {
                 if(MPHFBuilderAddElement(mphfb, key.data(), key.length()) != 0) {
@@ -41,18 +41,15 @@ class MphfWbpmContender : public Contender {
             return MPHFSize(mphfq);
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             auto x = [&] (std::string &key) {
                 return MPHFQuery(mphfq, key.data(), key.length());
             };
             doPerformQueries(keys, x);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            auto x = [&] (std::string &key) {
-                return MPHFQuery(mphfq, key.data(), key.length());
-            };
-            doPerformTest(keys, x);
+        size_t keyValue(size_t key_index) override {
+            return MPHFQuery(mphfq, keys[key_index].data(), keys[key_index].length());
         }
 };
 

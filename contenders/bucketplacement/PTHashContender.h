@@ -24,11 +24,7 @@ class PTHashContender : public Contender {
                     + " lf=" + std::to_string(internalLoadFactor);
         }
 
-        void beforeConstruction(const std::vector<std::string> &keys) override {
-            (void) keys;
-        }
-
-        void construct(const std::vector<std::string> &keys) override {
+        void construct() override {
             pthash::build_configuration config;
             config.lambda = lambda;
             config.alpha = internalLoadFactor;
@@ -43,12 +39,12 @@ class PTHashContender : public Contender {
             return pthashFunction.num_bits();
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             doPerformQueries(keys, pthashFunction);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            doPerformTest(keys, pthashFunction);
+        size_t keyValue(size_t key_index) override {
+            return pthashFunction(keys[key_index]);
         }
 };
 

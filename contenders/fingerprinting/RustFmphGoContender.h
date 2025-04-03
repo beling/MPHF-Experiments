@@ -5,7 +5,7 @@
 extern "C" {
 void *createFmphGoStruct();
 void constructFmphGo(void *rustStruct, void *keys, uint16_t gamma);
-uint64_t queryFmphGo(void *rustStruct, const char *key, size_t length);
+uint64_t queryFmphGo(void *rustStruct, void *keysStruct, size_t index);
 void queryFmphGoAll(void *rustStruct, void *keys);
 size_t sizeFmphGo(void *rustStruct);
 void destroyFmphGoStruct(void *rustStruct);
@@ -31,12 +31,8 @@ class RustFmphGoContender : public RustContender {
                 + " gamma=" + std::to_string(gamma);
         }
 
-        void beforeConstruction(const std::vector<std::string> &keys) override {
-            RustContender::beforeConstruction(keys);
-        }
-
-        void construct(void *keys) override {
-            constructFmphGo(rustStruct, keys, 100 * gamma);
+        void construct() override {
+            constructFmphGo(rustStruct, keysRustWrapper, 100 * gamma);
         }
 
         size_t sizeBits() override {
@@ -47,11 +43,8 @@ class RustFmphGoContender : public RustContender {
             queryFmphGoAll(rustStruct, keys);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            auto x = [&] (std::string &key) {
-                return queryFmphGo(rustStruct, key.c_str(), key.length());
-            };
-            doPerformTest(keys, x);
+        size_t keyValue(size_t key_index) override {
+            return queryFmphGo(rustStruct, keysRustWrapper, key_index);
         }
 
 };

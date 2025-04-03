@@ -1,41 +1,31 @@
 #pragma once
 
 #include "Contender.h"
+#include <cstddef>
 
 extern "C" {
 void initializeRayonThreadPool(uint64_t threads);
-void *convertToVecSlice(uint64_t len, const char **str);
-void destroyVecSlice(void *rustStruct);
+void * constructKeys(size_t len);
+void pushKey(void *rustStruct, const char *str, size_t len);
+void * constructKeysEnd(void *rustStruct);
+void destroyKeys(void *rustStruct);
 }
 
 class RustContender : public Contender {
-    private:
-        const char **keysAsCString;
+    protected:
         void *keysRustWrapper = nullptr;
     public:
         RustContender(size_t N): Contender(N, 1.0) {
-            keysAsCString = static_cast<const char **>(malloc(std::max(N, Contender::numQueries) * sizeof(char*)));
             initializeRayonThreadPool(numThreads);
         }
 
         ~RustContender() override {
-            free(keysAsCString);
             freeKeysWrapper();
         }
 
-        void beforeConstruction(const std::vector<std::string> &keys) override; // In cpp file
+        virtual void generateKeys(uint64_t seed) override;
 
-        void construct(const std::vector<std::string> &keys) final {
-            (void) keys;
-            construct(keysRustWrapper);
-        }
-
-        virtual void construct(void *keysRustWrapper) = 0;
-
-        void beforeQueries(const std::span<std::string> &keys) override; // In cpp file
-
-        void performQueries(const std::span<std::string> keys) final {
-            (void) keys;
+        void performQueries() final {
             performQueries(keysRustWrapper);
         }
 
@@ -46,7 +36,7 @@ class RustContender : public Contender {
             if (keysRustWrapper == nullptr) {
                 return;
             }
-            destroyVecSlice(keysRustWrapper);
+            destroyKeys(keysRustWrapper);
             keysRustWrapper = nullptr;
         }
 };

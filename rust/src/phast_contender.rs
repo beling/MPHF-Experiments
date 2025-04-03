@@ -1,7 +1,4 @@
 use ph::{GetSize, phast};
-use std::slice;
-
-use std::os::raw::c_char;
 use std::hint::black_box;
 
 pub enum PHastVariant {
@@ -47,8 +44,9 @@ pub extern "C" fn constructPhast(struct_ptr: *mut PHastVariant, keys_ptr: *const
 }
 
 #[no_mangle]
-pub extern "C" fn queryPhast(struct_ptr: *const PHastVariant, key_c_s: *const c_char, length: usize) -> u64 {
-    let key = unsafe { slice::from_raw_parts(key_c_s as *const u8, length) };
+pub extern "C" fn queryPhast(struct_ptr: *const PHastVariant, keys_ptr: *const Box<[Box<[u8]>]>, index: usize) -> u64 {
+    let keys = &unsafe { &*keys_ptr }[..];
+    let key = keys[index].as_ref();
     match unsafe { &*struct_ptr } {
         PHastVariant::Bits(function) => function.get(key) as u64,
         PHastVariant::Bits8(function) => function.get(key) as u64,

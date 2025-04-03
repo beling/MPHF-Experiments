@@ -5,7 +5,7 @@
 extern "C" {
 void *createFmphStruct();
 void constructFmph(void *rustStruct, void *keysStruct, uint16_t gamma);
-uint64_t queryFmph(void *rustStruct, const char *key, size_t length);
+uint64_t queryFmph(void *rustStruct, void *keysStruct, size_t index);
 void queryFmphAll(void *rustStruct, void *keysStruct);
 size_t sizeFmph(void *rustStruct);
 void destroyFmphStruct(void *rustStruct);
@@ -31,8 +31,8 @@ class RustFmphContender : public RustContender {
                 + " gamma=" + std::to_string(gamma);
         }
 
-        void construct(void *keys) override {
-            constructFmph(rustStruct, keys, 100 * gamma);
+        void construct() override {
+            constructFmph(rustStruct, keysRustWrapper, 100 * gamma);
         }
 
         size_t sizeBits() override {
@@ -43,11 +43,8 @@ class RustFmphContender : public RustContender {
             queryFmphAll(rustStruct, keys);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            auto x = [&] (std::string &key) {
-                return queryFmph(rustStruct, key.c_str(), key.length());
-            };
-            doPerformTest(keys, x);
+        size_t keyValue(size_t key_index) override {
+            return queryFmph(rustStruct, keysRustWrapper, key_index);
         }
 
 };

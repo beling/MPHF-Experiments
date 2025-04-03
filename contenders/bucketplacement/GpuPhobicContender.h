@@ -33,11 +33,7 @@ class GpuPhobicContender : public Contender {
                   + " partitionEncoder=" + typeid(PartitionEncoder).name();
         }
 
-        void beforeConstruction(const std::vector<std::string> &keys) override {
-            (void) keys;
-        }
-
-        void construct(const std::vector<std::string> &keys) override {
+        void construct() override {
             builder.build(keys, f);
         }
 
@@ -45,12 +41,12 @@ class GpuPhobicContender : public Contender {
             return f.getBitsPerKey() * N;
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             doPerformQueries(keys, f);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            doPerformTest(keys, f);
+        size_t keyValue(size_t key_index) override {
+            return f(keys[key_index]);
         }
 };
 

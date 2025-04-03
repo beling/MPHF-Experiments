@@ -21,7 +21,7 @@ class ConsensusContender : public Contender {
                 + " overhead=" + std::to_string(overhead);
         }
 
-        void construct(const std::vector<std::string> &keys) override {
+        void construct() override {
             (void) keys;
             consensus = new consensus::ConsensusRecSplit<k, overhead>(std::span(keys.begin(), keys.end()));
         }
@@ -30,12 +30,12 @@ class ConsensusContender : public Contender {
             return consensus->getBits();
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             doPerformQueries(keys, *consensus);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            doPerformTest(keys, *consensus);
+        size_t keyValue(size_t key_index) override {
+            return (*consensus)(keys[key_index]);
         }
 };
 

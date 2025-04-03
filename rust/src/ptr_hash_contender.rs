@@ -2,8 +2,6 @@ use mem_dbg::SizeFlags;
 use ptr_hash::PtrHashParams;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
-use std::os::raw::c_char;
-use std::slice;
 use std::hint::black_box;
 
 use cacheline_ef::CachelineEfVec;
@@ -76,8 +74,9 @@ pub extern "C" fn constructPtrHash(struct_ptr: *mut PtrHashVariant, keys_ptr: *c
 }
 
 #[no_mangle]
-pub extern "C" fn queryPtrHash(struct_ptr: *const PtrHashVariant, key_c_s: *const c_char, length: usize) -> u64 {
-    let key = unsafe { slice::from_raw_parts(key_c_s as *const u8, length) };
+pub extern "C" fn queryPtrHash(struct_ptr: *const PtrHashVariant, keys_ptr: *const Box<[Box<[u8]>]>, index: usize) -> u64 {
+    let keys = &unsafe { &*keys_ptr }[..];
+    let key = keys[index].as_ref();
     match unsafe { &*struct_ptr } {
         PtrHashVariant::LinearVec(f) => f.index(&key) as u64,
         PtrHashVariant::SquareVec(f) => f.index(&key) as u64,

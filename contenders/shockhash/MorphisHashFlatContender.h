@@ -23,11 +23,7 @@ class MorphisHashFlatContender : public Contender {
                 + " l=" + std::to_string(l);
         }
 
-        void beforeConstruction(const std::vector<std::string> &keys) override {
-            (void) keys;
-        }
-
-        void construct(const std::vector<std::string> &keys) override {
+        void construct() override {
             morphisHashFlat = new morphishash::MorphisHashFlat<l, ws, eb>(keys);
         }
 
@@ -35,12 +31,12 @@ class MorphisHashFlatContender : public Contender {
             return morphisHashFlat->getBits();
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             doPerformQueries(keys, *morphisHashFlat);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            doPerformTest(keys, *morphisHashFlat);
+        size_t keyValue(size_t key_index) override {
+            return (*morphisHashFlat)(keys[key_index]);
         }
 };
 

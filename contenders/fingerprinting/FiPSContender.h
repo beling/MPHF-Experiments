@@ -25,8 +25,7 @@ class FiPSContender : public Contender {
                 + " upperRank=" + std::to_string(_useUpperRank);
         }
 
-        void construct(const std::vector<std::string> &keys) override {
-            (void) keys;
+        void construct() override {
             fips = new fips::FiPS<_lineSize, _offsetType, _useUpperRank>(keys, gamma);
         }
 
@@ -34,12 +33,12 @@ class FiPSContender : public Contender {
             return fips->getBits();
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             doPerformQueries(keys, *fips);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            doPerformTest(keys, *fips);
+        size_t keyValue(size_t key_index) override {
+            return (*fips)(keys[key_index]);
         }
 };
 

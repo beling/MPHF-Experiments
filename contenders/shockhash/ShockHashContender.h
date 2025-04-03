@@ -24,11 +24,7 @@ class ShockHashContender : public Contender {
                   + " b=" + std::to_string(bucketSize);
         }
 
-        void beforeConstruction(const std::vector<std::string> &keys) override {
-            (void) keys;
-        }
-
-        void construct(const std::vector<std::string> &keys) override {
+        void construct() override {
             shockHash = new shockhash::ShockHash<l, rotationFitting>(keys, bucketSize);
         }
 
@@ -36,12 +32,12 @@ class ShockHashContender : public Contender {
             return shockHash->getBits();
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             doPerformQueries(keys, *shockHash);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            doPerformTest(keys, *shockHash);
+        size_t keyValue(size_t key_index) override {
+            return (*shockHash)(keys[key_index]);
         }
 };
 

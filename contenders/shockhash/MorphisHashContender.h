@@ -24,11 +24,7 @@ class MorphisHashContender : public Contender {
                   + " b=" + std::to_string(bucketSize);
         }
 
-        void beforeConstruction(const std::vector<std::string> &keys) override {
-            (void) keys;
-        }
-
-        void construct(const std::vector<std::string> &keys) override {
+        void construct() override {
             morphisHash = new morphishash::MorphisHash<l, ws>(keys, bucketSize, numThreads);
         }
 
@@ -36,12 +32,12 @@ class MorphisHashContender : public Contender {
             return morphisHash->getBits();
         }
 
-        void performQueries(const std::span<std::string> keys) override {
+        void performQueries() override {
             doPerformQueries(keys, *morphisHash);
         }
 
-        void performTest(const std::span<std::string> keys) override {
-            doPerformTest(keys, *morphisHash);
+        size_t keyValue(size_t key_index) override {
+            return (*morphisHash)(keys[key_index]);
         }
 };
 
