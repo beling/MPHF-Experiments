@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
     tlx::CmdlineParser cmd;
     cmd.add_double('l', "loadFactor", loadFactor, "Load Factor");
     cmd.add_bytes('n', "numKeys", N, "Number of objects");
-    cmd.add_bytes('q', "numQueries", Contender::numQueries, "Number of queries to perform");
+    cmd.add_bytes('q', "numQueries", Contender::numQueries, "Number of queries over all keys to perform");
     cmd.add_bytes('t', "numThreads", Contender::numThreads, "Number of threads to run benchmarks with");
     cmd.add_flag('T', "skipTests", Contender::skipTests, "Skip testing PHF for validity");
 

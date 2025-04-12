@@ -63,7 +63,7 @@ void Contender::run(bool shouldPrintResult) {
         usleep(1000*1000);
         std::cout<<"Querying"<<std::endl;
         begin = std::chrono::steady_clock::now();
-        performQueries();
+        for (size_t i = 0; i < numQueries; ++i) performQueries();
         end = std::chrono::steady_clock::now();
         queryTimeMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
     }
@@ -82,8 +82,8 @@ void Contender::printResult(std::string additional) {
                                     ? std::to_string(0.001 * constructionTimeMicroseconds)
                                     : std::to_string(constructionTimeMicroseconds / 1000))
               << " queryTimeMilliseconds=" << queryTimeMilliseconds
-              << " numQueries=" << numQueries
-              << " numQueriesTotal=" << (numQueries * numQueryThreads)
+              << " numQueries=" << (numQueries * N)
+              << " numQueriesTotal=" << (numQueries * N * numQueryThreads)
               << " N=" << N
               << " loadFactor=" << loadFactor
               << " threads=" << numThreads
@@ -92,7 +92,7 @@ void Contender::printResult(std::string additional) {
               << std::endl;
 }
 
-size_t Contender::numQueries = 5e7;
+size_t Contender::numQueries = 1;
 size_t Contender::numThreads = 1;
 size_t Contender::numQueryThreads = 1;
 size_t Contender::seed = 0;

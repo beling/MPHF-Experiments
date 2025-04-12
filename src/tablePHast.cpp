@@ -5,6 +5,7 @@
 #include "fingerprinting/FiPSContender.h"
 #include "fingerprinting/RustFmphContender.h"
 #include "bucketplacement/PTHashContender.h"
+#include "fingerprinting/RustFmphGoContender.h"
 #include "recsplit/SIMDRecSplitContender.h"
 #include "retrievalbased/SicHashContender.h"
 #include "shockhash/BipartiteShockHashFlatContender.h"
@@ -20,58 +21,138 @@ int main(int argc, char** argv) {
     size_t N = 5e6;
     tlx::CmdlineParser cmd;
     cmd.add_bytes('n', "numKeys", N, "Number of objects");
-    cmd.add_bytes('q', "numQueries", Contender::numQueries, "Number of queries to perform");
+    cmd.add_bytes('q', "numQueries", Contender::numQueries, "Number of queries over all keys to perform");
     cmd.add_bytes('t', "numThreads", Contender::numThreads, "Number of threads to use for construction");
     cmd.add_flag('T', "skipTests", Contender::skipTests, "Skip testing PHF for validity");
     cmd.add_bytes('s', "seed", Contender::seed, "Seed for pseudo-number generator");
+
+    bool all = false;
+    bool most = false;
+    bool rest = false;
+    bool simdrecsplit = false;
+    bool sichash = false;
+    bool sichash1 = false;
+    bool sichash2 = false;
+    bool pthash = false;
+    bool partitionedPthash = false;
+    bool rustFmphContender = false;
+    bool rustFmphGoContender = false;
+    bool rustPhastContender = false;
+    bool rustPtrHashContender = false;
+    bool densePartitionedPtHash = false;
+    bool bipartiteShockHashFlat = false;
+
+    cmd.add_flag("all", all, "Execute all benchmarks");
+    cmd.add_flag("most", most, "Execute most benchmarks");
+    cmd.add_flag("rest", rest, "Execute most but not PHast benchmarks");
+    cmd.add_flag("simdrecsplit", simdrecsplit, "Execute SIMDRecSplit benchmark");
+    cmd.add_flag("sichash", sichash, "Execute sichash benchmark");
+    cmd.add_flag("sichash1", sichash1, "Execute sichash 1 benchmark");
+    cmd.add_flag("sichash2", sichash2, "Execute sichash 2 benchmark");
+    //cmd.add_flag("bipartiteShockHash", bipartiteShockHash, "Execute bipartite shockhash benchmark");
+    cmd.add_flag("bipartiteShockHashFlat", bipartiteShockHashFlat, "Execute bipartite shockhash flat benchmark");
+    cmd.add_flag("pthash", pthash, "Execute pthash benchmark");
+    cmd.add_flag("partitionedPthash", partitionedPthash, "Execute partitioned pthash benchmark");
+    cmd.add_flag("densePartitionedPtHash", densePartitionedPtHash, "Execute dense partitioend PTHash benchmark");
+    cmd.add_flag("rustFmph", rustFmphContender, "Execute rust fmph benchmark");
+    cmd.add_flag("rustFmphGo", rustFmphGoContender, "Execute rust fmph-go benchmark");
+    cmd.add_flag("rustPHast", rustPhastContender, "Execute rust PHast benchmark");
+    cmd.add_flag("rustPtrHash", rustPtrHashContender, "Execute rust ptrhash benchmark");
+
 
     if (!cmd.process(argc, argv)) {
         return 1;
     }
 
-    //{ConsensusContender<256, 0.1>(N).run();}
-    //{ConsensusContender<512, 0.03>(N).run();}
+    if (all || most || rustPhastContender) {
+        {RustPhastContender(N, 4, 260).run();}
+        {RustPhastContender(N, 4, 290).run();}
 
-    //{FiPSContender<>(N, 1.5).run();}
-    //{FiPSContender<>(N, 2.0).run();}
+        {RustPhastContender(N, 5, 260).run();}
+        {RustPhastContender(N, 5, 280).run();}
+        {RustPhastContender(N, 5, 300).run();}
+        {RustPhastContender(N, 5, 320).run();}
 
-    {RustPhastContender(N, 6, 320).run();}
-    {RustPhastContender(N, 7, 370).run();}
-    {RustPhastContender(N, 8, 410).run();}
-    {RustPhastContender(N, 8, 430).run();}
-    {RustPhastContender(N, 8, 450).run();}
-    {RustPhastContender(N, 9, 510).run();}
-    {RustPhastContender(N, 9, 530).run();}
-    {RustPhastContender(N, 10, 620).run();}
-    {RustPhastContender(N, 10, 650).run();}
+        {RustPhastContender(N, 6, 280).run();}
+        {RustPhastContender(N, 6, 300).run();}
+        {RustPhastContender(N, 6, 320).run();}
+        {RustPhastContender(N, 6, 340).run();}
 
-    {RustPtrHashContender(N, RustPtrHashContender::VARIANT_LINEAR_VEC, 3.0).run();}
-    {RustPtrHashContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 4.0).run();}
+        {RustPhastContender(N, 7, 350).run();}
+        {RustPhastContender(N, 7, 370).run();}
+        {RustPhastContender(N, 7, 390).run();}
 
-    {PTHashContender<true, pthash::compact_compact>(N, 0.99, 4.0).run();}
-    {PTHashContender<true, pthash::elias_fano>(N, 0.99, 5.0).run();}
+        {RustPhastContender(N, 8, 410).run();}
+        {RustPhastContender(N, 8, 430).run();}
+        {RustPhastContender(N, 8, 450).run();}
+        {RustPhastContender(N, 8, 460).run();}
 
-    {PartitionedPTHashContender<true, pthash::compact_compact>(N, 0.99, 4.0).run();}
-    {PartitionedPTHashContender<true, pthash::elias_fano>(N, 0.99, 5.0).run();}
+        {RustPhastContender(N, 9, 510).run();}
+        {RustPhastContender(N, 9, 530).run();}
 
-    {PhobicContender<pthash::dense_interleaved<pthash::compact>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 3.9).run();}
-    {PhobicContender<pthash::dense_interleaved<pthash::rice>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 4.5).run();}
-    {PhobicContender<pthash::dense_interleaved<pthash::rice>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 6.5).run();}
-    {PhobicContender<pthash::dense_interleaved<pthash::compact>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 6.5).run();}
-    {PhobicContender<pthash::dense_interleaved<pthash::rice>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 9.0).run();}
+        //{RustPhastContender(N, 10, 560).run();}
+        {RustPhastContender(N, 10, 580).run();}
+        {RustPhastContender(N, 10, 600).run();}
 
-    {SicHashContender<true, 64>(N, 0.97, sichash::SicHashConfig().percentages(0.45, 0.31)).run();}
-    {SicHashContender<true, 64>(N, 0.9, sichash::SicHashConfig().percentages(0.21, 0.78)).run();}
+        {RustPhastContender(N, 11, 630).run();}
+        {RustPhastContender(N, 11, 650).run();}
+        {RustPhastContender(N, 11, 670).run();}
 
-    {SIMDRecSplitContender<5>(N, 5).run();}
-    {SIMDRecSplitContender<8>(N, 100).run();}
+        {RustPhastContender(N, 12, 680).run();}
+        {RustPhastContender(N, 12, 700).run();}
+        {RustPhastContender(N, 12, 720).run();}
+    }
 
-    {RustFmphContender(N, 1.0).run();}
-    {RustFmphContender(N, 2.0).run();}
+    if (all || most || rest || rustPtrHashContender) {
+        {RustPtrHashContender(N, RustPtrHashContender::VARIANT_LINEAR_VEC, 3.0).run();} // Fast
+        {RustPtrHashContender(N, RustPtrHashContender::VARIANT_LINEAR_EF, 3.0).run();}
+        {RustPtrHashContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 3.5).run();}   // Default
+        //{RustPtrHashContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 3.9).run();}
+        {RustPtrHashContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 4.0).run();}   // Compact
+    }
+
+    if (all || most || rest || pthash) {
+        {PTHashContender<true, pthash::compact_compact>(N, 0.99, 4.0).run();}
+        {PTHashContender<true, pthash::elias_fano>(N, 0.99, 5.0).run();}
+    }
+    
+    if (all || most || rest || partitionedPthash) {
+        {PartitionedPTHashContender<true, pthash::compact_compact>(N, 0.99, 4.0).run();}
+        {PartitionedPTHashContender<true, pthash::elias_fano>(N, 0.99, 5.0).run();}
+    }
+
+    if (all || most || rest || densePartitionedPtHash) {
+        {PhobicContender<pthash::dense_interleaved<pthash::compact>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 3.9).run();}
+        {PhobicContender<pthash::dense_interleaved<pthash::rice>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 4.5).run();}
+        {PhobicContender<pthash::dense_interleaved<pthash::rice>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 6.5).run();}
+        {PhobicContender<pthash::dense_interleaved<pthash::compact>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 6.5).run();}
+        {PhobicContender<pthash::dense_interleaved<pthash::rice>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 9.0).run();}
+    }
+
+    if (all || most || rest || rustFmphContender) {
+        {RustFmphGoContender(N, 1.0).run();}
+        {RustFmphGoContender(N, 2.0).run();}
+    }
+
+    if (all || most || rest || rustFmphGoContender) {
+        {RustFmphContender(N, 1.0).run();}
+        {RustFmphContender(N, 2.0).run();}
+    }
+
+    if (all || most || rest || simdrecsplit) {
+        {SIMDRecSplitContender<5>(N, 5).run();} 
+        {SIMDRecSplitContender<8>(N, 100).run();}
+    }
+
+    if (all || sichash || sichash1)
+        {SicHashContender<true, 64>(N, 0.97, sichash::SicHashConfig().percentages(0.45, 0.31)).run();}
+    if (all || sichash || sichash2)
+        {SicHashContender<true, 64>(N, 0.9, sichash::SicHashConfig().percentages(0.21, 0.78)).run();}
 
     //{ChdContender(N, 1.0, 1.0, 3, true).run();}
 
-    {BipartiteShockHashFlatContender<64>(N).run();}
+    if (all || bipartiteShockHashFlat)
+        {BipartiteShockHashFlatContender<64>(N).run();}
 
     return 0;
 }

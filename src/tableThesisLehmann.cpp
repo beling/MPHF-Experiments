@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
     size_t N = 5e6;
     tlx::CmdlineParser cmd;
     cmd.add_bytes('n', "numKeys", N, "Number of objects");
-    cmd.add_bytes('q', "numQueries", Contender::numQueries, "Number of queries to perform");
+    cmd.add_bytes('q', "numQueries", Contender::numQueries, "Number of queries over all keys to perform");
     cmd.add_bytes('t', "numThreads", Contender::numThreads, "Number of threads to use for construction");
     cmd.add_bytes('t', "numQueryThreads", Contender::numQueryThreads, "Number of threads to use for queries");
     cmd.add_flag('T', "skipTests", Contender::skipTests, "Skip testing PHF for validity");
