@@ -57,3 +57,54 @@ class RustPtrHashContender : public RustContender {
 };
 
 void rustPtrHashContenderRunner(size_t N);
+
+
+
+extern "C" {
+    void *createPtrHashGxStruct();
+    void constructPtrHashGx(void *rustStruct, void *keysStruct, uint64_t variant, double lambda);
+    uint64_t queryPtrHashGx(void *rustStruct, void *keysStruct, size_t index);
+    void queryPtrHashGxAll(void *rustStruct, void *keysStruct);
+    size_t sizePtrHashGx(void *rustStruct);
+    void destroyPtrHashGxStruct(void *rustStruct);
+}
+
+class RustPtrHashGxContender : public RustContender {
+    protected:
+        void *rustStruct = nullptr;
+        uint64_t variant;
+        double lambda;
+    public:
+        RustPtrHashGxContender(size_t N, uint64_t variant, double lambda)
+            : RustContender(N), variant(variant), lambda(lambda) {
+            rustStruct = createPtrHashGxStruct();
+        }
+
+        ~RustPtrHashGxContender() override {
+            destroyPtrHashGxStruct(rustStruct);
+        }
+
+        std::string name() override {
+            return std::string("RustPtrHashGx")
+                + " variant=" + std::to_string(variant)
+                + " lambda=" + std::to_string(lambda);
+        }
+
+        void construct() override {
+            constructPtrHashGx(rustStruct, keysRustWrapper, variant, lambda);
+        }
+
+        size_t sizeBits() override {
+            return sizePtrHashGx(rustStruct) * 8;
+        }
+
+        void performQueries(void *keys) override {
+            queryPtrHashGxAll(rustStruct, keys);
+        }
+
+        size_t keyValue(size_t key_index) override {
+            return queryPtrHashGx(rustStruct, keysRustWrapper, key_index);
+        }
+};
+
+void rustPtrHashGxContenderRunner(size_t N);

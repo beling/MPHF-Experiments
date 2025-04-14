@@ -83,3 +83,4 @@ pub extern "C" fn sizePhast(struct_ptr: *const PHastVariant) -> usize {
 pub extern "C" fn destroyPhastStruct(struct_instance: *mut PHastVariant) {
     unsafe { let _ = Box::from_raw(struct_instance); }
 }
+

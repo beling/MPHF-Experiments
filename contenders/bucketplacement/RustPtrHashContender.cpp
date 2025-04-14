@@ -12,3 +12,16 @@ void rustPtrHashContenderRunner(size_t N) {
         RustPtrHashContender(N, RustPtrHashContender::VARIANT_SQUARE_EF, lambda).run();
     }
 }
+
+void rustPtrHashGxContenderRunner(size_t N) {
+    for (double lambda = 0.7; lambda <= 4.01; lambda += 0.2) {
+        RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_CUBIC_VEC, lambda).run();
+        RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, lambda).run();
+    }
+    for (double lambda = 0.7; lambda <= 3.41; lambda += 0.2) {
+        RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_LINEAR_VEC, lambda).run();
+        RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_LINEAR_EF, lambda).run();
+        RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_SQUARE_VEC, lambda).run();
+        RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_SQUARE_EF, lambda).run();
+    }
+}

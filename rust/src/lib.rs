@@ -2,6 +2,7 @@ mod fmph_contender;
 mod fmph_go_contender;
 mod phast_contender;
 mod ptr_hash_contender;
+mod ptr_hash_contender_gx;
 
 use std::os::raw::c_char;
 use std::slice;

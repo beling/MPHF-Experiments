@@ -57,6 +57,7 @@ int main(int argc, char** argv) {
     bool rustFmphGoContender = false;
     bool rustPhastContender = false;
     bool rustPtrHashContender = false;
+    bool rustPtrHashGxContender = false;
     bool sichashOnlyPartial = false;
     bool bipartiteShockHash = false;
     bool gpuPhobic = false;
@@ -103,6 +104,7 @@ int main(int argc, char** argv) {
     cmd.add_flag("rustFmphGo", rustFmphGoContender, "Execute rust fmph-go benchmark");
     cmd.add_flag("rustPHast", rustPhastContender, "Execute rust PHast benchmark");
     cmd.add_flag("rustPtrHash", rustPtrHashContender, "Execute rust ptrhash benchmark");
+    cmd.add_flag("rustPtrHashGx", rustPtrHashGxContender, "Execute rust ptrhash with gxhash benchmark");
     cmd.add_flag("gpuPhobic", gpuPhobic, "Execute Phobic on the GPU benchmark");
     cmd.add_flag("fiPS", fiPS, "Execute FiPS benchmark");
     cmd.add_flag("consensus", consensus, "Execute Consensus benchmark");
@@ -121,6 +123,9 @@ int main(int argc, char** argv) {
     }
     if (rustPtrHashContender) {
         rustPtrHashContenderRunner(N);
+    }
+    if (rustPtrHashGxContender) {
+        rustPtrHashGxContenderRunner(N);
     }
     if (recsplit) {
         recSplitContenderRunner(N);

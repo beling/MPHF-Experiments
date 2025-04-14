@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
     bool rustFmphGoContender = false;
     bool rustPhastContender = false;
     bool rustPtrHashContender = false;
+    bool rustPtrHashGxContender = false;
     bool densePartitionedPtHash = false;
     bool bipartiteShockHashFlat = false;
 
@@ -58,11 +59,16 @@ int main(int argc, char** argv) {
     cmd.add_flag("rustFmphGo", rustFmphGoContender, "Execute rust fmph-go benchmark");
     cmd.add_flag("rustPHast", rustPhastContender, "Execute rust PHast benchmark");
     cmd.add_flag("rustPtrHash", rustPtrHashContender, "Execute rust ptrhash benchmark");
+    cmd.add_flag("rustPtrHashGx", rustPtrHashGxContender, "Execute rust ptrhash benchmark");
 
 
     if (!cmd.process(argc, argv)) {
         return 1;
     }
+
+    //{RustPhastContender(N, 8, 425).run();}
+    //{RustPtrHashContender(N, RustPtrHashContender::VARIANT_LINEAR_VEC, 3.0).run();} // Fast
+    //{RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 3.5).run();}
 
     if (all || most || rustPhastContender) {
         {RustPhastContender(N, 4, 260).run();}
@@ -83,6 +89,8 @@ int main(int argc, char** argv) {
         {RustPhastContender(N, 7, 390).run();}
 
         {RustPhastContender(N, 8, 410).run();}
+        {RustPhastContender(N, 8, 420).run();}  //!!
+        {RustPhastContender(N, 8, 425).run();}  //!!
         {RustPhastContender(N, 8, 430).run();}
         {RustPhastContender(N, 8, 450).run();}
         {RustPhastContender(N, 8, 460).run();}
@@ -98,7 +106,7 @@ int main(int argc, char** argv) {
         {RustPhastContender(N, 11, 650).run();}
         {RustPhastContender(N, 11, 670).run();}
 
-        {RustPhastContender(N, 12, 680).run();}
+        //{RustPhastContender(N, 12, 680).run();}   // worse than (11, 630)
         {RustPhastContender(N, 12, 700).run();}
         {RustPhastContender(N, 12, 720).run();}
     }
@@ -109,6 +117,14 @@ int main(int argc, char** argv) {
         {RustPtrHashContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 3.5).run();}   // Default
         //{RustPtrHashContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 3.9).run();}
         {RustPtrHashContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 4.0).run();}   // Compact
+    }
+
+    if (all || most || /*rest ||*/ rustPtrHashGxContender) {
+        {RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_LINEAR_VEC, 3.0).run();} // Fast
+        {RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_LINEAR_EF, 3.0).run();}
+        {RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 3.5).run();}   // Default
+        //{RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 3.9).run();}
+        {RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 4.0).run();}   // Compact
     }
 
     if (all || most || rest || pthash) {
