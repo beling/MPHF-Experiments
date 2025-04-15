@@ -8,6 +8,7 @@ endif ()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-march=native>)
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
 
 ###################### Competitor setup ######################
@@ -77,7 +78,7 @@ add_custom_command(
                      CARGO_TARGET_DIR='${CMAKE_CURRENT_BINARY_DIR}/target' \
                      cargo build --release"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/rust
-    DEPENDS ${RustSourceFiles})
+    DEPENDS ${RustSourceFiles} "${CMAKE_SOURCE_DIR}/rust/Cargo.toml")
 add_custom_target(RustCompilation DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/target/release/libmphf_experiments.a")
 add_library(RustCompetitors STATIC IMPORTED)
 set_property(TARGET RustCompetitors PROPERTY IMPORTED_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/target/release/libmphf_experiments.a")

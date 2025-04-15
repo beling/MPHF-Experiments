@@ -38,6 +38,8 @@ int main(int argc, char** argv) {
     bool rustFmphContender = false;
     bool rustFmphGoContender = false;
     bool rustPhastContender = false;
+    bool rustPhastContenderEF = false;
+    bool rustPhastContenderC = false;
     bool rustPtrHashContender = false;
     bool rustPtrHashGxContender = false;
     bool densePartitionedPtHash = false;
@@ -57,7 +59,9 @@ int main(int argc, char** argv) {
     cmd.add_flag("densePartitionedPtHash", densePartitionedPtHash, "Execute dense partitioend PTHash benchmark");
     cmd.add_flag("rustFmph", rustFmphContender, "Execute rust fmph benchmark");
     cmd.add_flag("rustFmphGo", rustFmphGoContender, "Execute rust fmph-go benchmark");
-    cmd.add_flag("rustPHast", rustPhastContender, "Execute rust PHast benchmark");
+    cmd.add_flag("rustPHast", rustPhastContender, "Execute all rust PHast benchmark");
+    cmd.add_flag("rustPHastEF", rustPhastContenderEF, "Execute rust PHast with EF encoding benchmark");
+    cmd.add_flag("rustPHastC", rustPhastContenderC, "Execute rust PHast with C encoding benchmark");
     cmd.add_flag("rustPtrHash", rustPtrHashContender, "Execute rust ptrhash benchmark");
     cmd.add_flag("rustPtrHashGx", rustPtrHashGxContender, "Execute rust ptrhash benchmark");
 
@@ -70,45 +74,54 @@ int main(int argc, char** argv) {
     //{RustPtrHashContender(N, RustPtrHashContender::VARIANT_LINEAR_VEC, 3.0).run();} // Fast
     //{RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 3.5).run();}
 
-    if (all || most || rustPhastContender) {
-        {RustPhastContender(N, 4, 260).run();}
-        {RustPhastContender(N, 4, 290).run();}
+    if (all || most || rustPhastContender || rustPhastContenderEF) {
+        {RustPhastContender(N, 4, 260, true).run();}
+        //{RustPhastContender(N, 4, 290, true).run();}
+    
+        {RustPhastContender(N, 5, 260, true).run();}
+        {RustPhastContender(N, 5, 280, true).run();}
+        //{RustPhastContender(N, 5, 300, true).run();}
+        //{RustPhastContender(N, 5, 320, true).run();}
+    
+        //{RustPhastContender(N, 6, 280, true).run();}
+        //{RustPhastContender(N, 6, 300, true).run();}
+        {RustPhastContender(N, 6, 320, true).run();}
+        //{RustPhastContender(N, 6, 340, true).run();}
+    
+        //{RustPhastContender(N, 7, 350, true).run();}
+        {RustPhastContender(N, 7, 370, true).run();}
+        {RustPhastContender(N, 7, 390, true).run();}
+    
+        {RustPhastContender(N, 8, 410, true).run();}
+        {RustPhastContender(N, 8, 420, true).run();}  //!!
+        //{RustPhastContender(N, 8, 425, true).run();}  //!!
+        {RustPhastContender(N, 8, 430, true).run();}
+        {RustPhastContender(N, 8, 450, true).run();}
+        {RustPhastContender(N, 8, 460, true).run();}
+    
+        {RustPhastContender(N, 9, 510, true).run();}
+        {RustPhastContender(N, 9, 530, true).run();}
+    
+        //{RustPhastContender(N, 10, 560, true).run();}
+        //{RustPhastContender(N, 10, 580, true).run();}
+        {RustPhastContender(N, 10, 600, true).run();}
+    
+        {RustPhastContender(N, 11, 630, true).run();}
+        {RustPhastContender(N, 11, 650, true).run();}
+        //{RustPhastContender(N, 11, 670, true).run();}
+    
+        //{RustPhastContender(N, 12, 680, true).run();}   // worse than (11, 630)
+        {RustPhastContender(N, 12, 700, true).run();}
+        {RustPhastContender(N, 12, 720, true).run();}
+    }
 
-        {RustPhastContender(N, 5, 260).run();}
-        {RustPhastContender(N, 5, 280).run();}
-        {RustPhastContender(N, 5, 300).run();}
-        {RustPhastContender(N, 5, 320).run();}
-
-        {RustPhastContender(N, 6, 280).run();}
-        {RustPhastContender(N, 6, 300).run();}
-        {RustPhastContender(N, 6, 320).run();}
-        {RustPhastContender(N, 6, 340).run();}
-
-        {RustPhastContender(N, 7, 350).run();}
-        {RustPhastContender(N, 7, 370).run();}
-        {RustPhastContender(N, 7, 390).run();}
-
-        {RustPhastContender(N, 8, 410).run();}
-        {RustPhastContender(N, 8, 420).run();}  //!!
-        {RustPhastContender(N, 8, 425).run();}  //!!
-        {RustPhastContender(N, 8, 430).run();}
-        {RustPhastContender(N, 8, 450).run();}
-        {RustPhastContender(N, 8, 460).run();}
-
-        {RustPhastContender(N, 9, 510).run();}
-        {RustPhastContender(N, 9, 530).run();}
-
-        //{RustPhastContender(N, 10, 560).run();}
-        {RustPhastContender(N, 10, 580).run();}
-        {RustPhastContender(N, 10, 600).run();}
-
-        {RustPhastContender(N, 11, 630).run();}
-        {RustPhastContender(N, 11, 650).run();}
-        {RustPhastContender(N, 11, 670).run();}
-
-        //{RustPhastContender(N, 12, 680).run();}   // worse than (11, 630)
-        {RustPhastContender(N, 12, 700).run();}
-        {RustPhastContender(N, 12, 720).run();}
+    if (all || most || rustPhastContender || rustPhastContenderC) {
+        {RustPhastContender(N, 8, 410, false).run();}
+        {RustPhastContender(N, 8, 420, false).run();}  //!!
+        //{RustPhastContender(N, 8, 425, false).run();}  //!!
+        {RustPhastContender(N, 8, 430, false).run();}
+        {RustPhastContender(N, 8, 450, false).run();}
+        {RustPhastContender(N, 8, 460, false).run();}
     }
 
     if (all || most || rest || rustPtrHashContender) {
