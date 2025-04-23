@@ -16,7 +16,10 @@ ptr_hash = "1.1"
 gxhash = "3.5"
 cacheline-ef = "1.1"
 rayon = "1.7.0"
+#rand = "*"
 
 [profile.release]
-lto = "fat"
+#lto = true
+#lto = "fat"
+#lto = "thin"
 codegen-units = 1

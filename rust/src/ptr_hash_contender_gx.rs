@@ -103,22 +103,38 @@ pub extern "C" fn queryPtrHashGx(struct_ptr: *const PtrHashVariant, keys_ptr: *c
     }
 }
 
+#[inline(never)]
+fn query_all<BF, F, Hx>(f: &ptr_hash::PtrHash<&'static [u8], BF, F, Hx, Vec<u8>>, keys: &'static [Box<[u8]>])
+    where BF: ptr_hash::bucket_fn::BucketFn, F: ptr_hash::pack::Packed, Hx: ptr_hash::hash::Hasher<&'static [u8]>
+{
+    for key in keys {
+        black_box(f.index(&key.as_ref()));
+    }
+    //keys.iter().for_each(|key| { black_box(f.index(&key));});
+}
+
 #[no_mangle]
 pub extern "C" fn queryPtrHashGxAll(struct_ptr: *const PtrHashVariant, keys_ptr: *const Box<[Box<[u8]>]>) {
     let keys = unsafe { &*keys_ptr }; 
     match unsafe { &*struct_ptr } {
-        PtrHashVariant::LinearVec(f) =>
-            for key in keys { black_box(f.index(&key.as_ref())); },
-        PtrHashVariant::SquareVec(f) =>
-            for key in keys { black_box(f.index(&key.as_ref())); },
-        PtrHashVariant::CubicVec(f) =>
-            for key in keys { black_box(f.index(&key.as_ref())); },
-        PtrHashVariant::LinearEF(f) =>
-            for key in keys { black_box(f.index(&key.as_ref())); },
-        PtrHashVariant::SquareEF(f) =>
-            for key in keys { black_box(f.index(&key.as_ref())); },
-        PtrHashVariant::CubicEF(f) =>
-            for key in keys { black_box(f.index(&key.as_ref())); },
+        PtrHashVariant::LinearVec(f) => query_all(f, keys),
+            //for key in keys { black_box(key.as_ref()); black_box(f.index(&key.as_ref())); },
+            //keys.iter().for_each(|key| { black_box(f.index(&key.as_ref())); }),
+        PtrHashVariant::SquareVec(f) => query_all(f, keys),
+            //for key in keys { black_box(key.as_ref()); black_box(f.index(&key.as_ref())); },
+            //keys.iter().for_each(|key| { black_box(f.index(&key.as_ref())); }),
+        PtrHashVariant::CubicVec(f) => query_all(f, keys),
+            //for key in keys { black_box(key.as_ref()); black_box(f.index(&key.as_ref())); },
+            //keys.iter().for_each(|key| { black_box(f.index(&key.as_ref())); }),
+        PtrHashVariant::LinearEF(f) => query_all(f, keys),
+            //for key in keys { black_box(key.as_ref()); black_box(f.index(&key.as_ref())); },
+            //keys.iter().for_each(|key| { black_box(f.index(&key.as_ref())); }),
+        PtrHashVariant::SquareEF(f) => query_all(f, keys),
+            //for key in keys { black_box(key.as_ref()); black_box(f.index(&key.as_ref())); },
+            //keys.iter().for_each(|key| { black_box(f.index(&key.as_ref())); }),
+        PtrHashVariant::CubicEF(f) => query_all(f, keys),
+            //for key in keys { black_box(key.as_ref()); black_box(f.index(&key.as_ref())); },
+            //keys.iter().for_each(|key| { black_box(f.index(&key.as_ref())); }),
         PtrHashVariant::None => panic!("PtrHashGx not constructed yet"),
     };
 }

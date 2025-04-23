@@ -8,7 +8,7 @@ endif ()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-march=native>)
-    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+    #set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
 
 ###################### Competitor setup ######################

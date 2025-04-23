@@ -84,24 +84,31 @@ pub extern "C" fn queryPhast(struct_ptr: *const PHastVariant, keys_ptr: *const B
     }
 }
 
+/*#[inline(always)] fn query_all<SS, CA, S>(function: &phast::Function<SS, CA, S>, keys: &[Box<[u8]>])
+    where SS: ph::fmph::SeedSize, CA: phast::CompressedArray, S: ph::BuildSeededHasher 
+{
+    for key in keys {
+        black_box(function.get(key.as_ref()));
+    }
+}*/
+
 #[no_mangle]
 pub extern "C" fn queryPhastAll(struct_ptr: *const PHastVariant, keys_ptr: *const Box<[Box<[u8]>]>) {
     let keys = unsafe { &*keys_ptr };
     match unsafe { &*struct_ptr } {
-        PHastVariant::BitsEF(function) =>
+        PHastVariant::BitsEF(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
-        PHastVariant::Bits8EF(function) => 
+        PHastVariant::Bits8EF(function) =>  //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
-        PHastVariant::Bits4EF(function) => 
+        PHastVariant::Bits4EF(function) =>  //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
-        PHastVariant::BitsC(function) =>
+        PHastVariant::BitsC(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
-        PHastVariant::Bits8C(function) =>
+        PHastVariant::Bits8C(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
-        PHastVariant::Bits4C(function) =>
+        PHastVariant::Bits4C(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
         PHastVariant::None => panic!("PHast not constructed yet"),
-
     }
 }
 

@@ -7,7 +7,8 @@
 #include <chrono>
 #include <bytehamster/util/XorShift64.h>
 
-
+//#include <algorithm>
+//#include <random>
 
 
 std::vector<std::string> generateInputData(size_t N, uint64_t seed) {
@@ -21,6 +22,8 @@ std::vector<std::string> generateInputData(size_t N, uint64_t seed) {
 
 void Contender::generateKeys(uint64_t seed) {
     keys = generateInputData(N, seed);
+    //auto rng = std::default_random_engine {};
+    //std::shuffle(std::begin(keys), std::end(keys), rng);
 }
 
 void Contender::run(bool shouldPrintResult) {

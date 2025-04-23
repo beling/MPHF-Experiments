@@ -7,6 +7,9 @@ mod ptr_hash_contender_gx;
 use std::os::raw::c_char;
 use std::slice;
 
+//use rand::rng;
+//use rand::seq::SliceRandom;
+
 static mut THREAD_POOL_INITIALIZED: bool = false;
 
 #[no_mangle]
@@ -33,6 +36,7 @@ pub extern "C" fn pushKey(v: *mut Vec<Box<[u8]>>, str: *const c_char, len: usize
 #[no_mangle]
 pub extern "C" fn constructKeysEnd(struct_instance: *mut Vec<Box<[u8]>>) -> *mut Box<[Box<[u8]>]> {
     let b = unsafe { Box::from_raw(struct_instance) };
+    //(*b).shuffle(&mut rng());
     Box::into_raw(Box::new(b.into_boxed_slice()))
 }
 

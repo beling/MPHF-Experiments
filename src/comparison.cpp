@@ -56,6 +56,8 @@ int main(int argc, char** argv) {
     bool rustFmphContender = false;
     bool rustFmphGoContender = false;
     bool rustPhastContender = false;
+    bool rustPhastContenderEF = false;
+    bool rustPhastContenderC = false;
     bool rustPtrHashContender = false;
     bool rustPtrHashGxContender = false;
     bool sichashOnlyPartial = false;
@@ -103,6 +105,8 @@ int main(int argc, char** argv) {
     cmd.add_flag("rustFmph", rustFmphContender, "Execute rust fmph benchmark");
     cmd.add_flag("rustFmphGo", rustFmphGoContender, "Execute rust fmph-go benchmark");
     cmd.add_flag("rustPHast", rustPhastContender, "Execute rust PHast benchmark");
+    cmd.add_flag("rustPHastEF", rustPhastContenderEF, "Execute rust PHast with EF encoding benchmark");
+    cmd.add_flag("rustPHastC", rustPhastContenderC, "Execute rust PHast with C encoding benchmark");
     cmd.add_flag("rustPtrHash", rustPtrHashContender, "Execute rust ptrhash benchmark");
     cmd.add_flag("rustPtrHashGx", rustPtrHashGxContender, "Execute rust ptrhash with gxhash benchmark");
     cmd.add_flag("gpuPhobic", gpuPhobic, "Execute Phobic on the GPU benchmark");
@@ -118,11 +122,11 @@ int main(int argc, char** argv) {
     if (rustFmphGoContender) {
         rustFmphGoContenderRunner(N);
     }
-    if (rustPhastContender) {
-        rustPHastContenderRunner(N);
+    if (rustPhastContender || rustPhastContenderEF) {
+        rustPHastContenderRunnerWithEf(N, true);
     }
-    if (rustPtrHashContender) {
-        rustPtrHashContenderRunner(N);
+    if (rustPtrHashContender || rustPhastContenderC) {
+        rustPHastContenderRunnerWithEf(N, false);
     }
     if (rustPtrHashGxContender) {
         rustPtrHashGxContenderRunner(N);
