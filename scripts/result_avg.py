@@ -4,9 +4,9 @@ from pathlib import Path
 from decimal import Decimal
 import sys
 
-to_sum = ('queryTimeMilliseconds', 'numQueriesTotal')
-to_avg = ('bitsPerElement')
-to_avg_round = ('constructionTimeMilliseconds', 'numQueries')
+to_sum = ('queryTimeMilliseconds', 'numQueries', 'numQueriesTotal')
+to_avg = ('bitsPerElement',)
+to_avg_round = ('constructionTimeMilliseconds',)
 
 class Value:
     def __init__(self):
@@ -46,7 +46,7 @@ for key, value in results.items():
     print('RESULT', key, end='')
     for k, v in value.sum.items():
         print(f' {k}=', end='')
-        if k in to_sum: print(v)
-        elif k in to_avg: print(v / value.count)
-        else: print(round(v / value.count))
+        if k in to_sum: print(v, end='')
+        elif k in to_avg: print(v / value.count, end='')
+        else: print(round(v / value.count), end='')
     print()
