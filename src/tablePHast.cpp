@@ -75,22 +75,22 @@ int main(int argc, char** argv) {
     //{RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 3.5).run();}
 
     if (all || most || rustPhastContender || rustPhastContenderEF) {
-        //{RustPhastContender(N, 4, 260, true).run();} //2
+        {RustPhastContender(N, 4, 260, true).run();} //2
         //{RustPhastContender(N, 4, 290, true).run();} //3
     
-        //{RustPhastContender(N, 5, 260, true).run();} //2
+        {RustPhastContender(N, 5, 260, true).run();} //2
         {RustPhastContender(N, 5, 280, true).run();} //1
         //{RustPhastContender(N, 5, 300, true).run();} //3 
         //{RustPhastContender(N, 5, 320, true).run();} //3
     
         //{RustPhastContender(N, 6, 280, true).run();} //3
         //{RustPhastContender(N, 6, 300, true).run();} //3
-        //{RustPhastContender(N, 6, 320, true).run();} //2
-        //{RustPhastContender(N, 6, 340, true).run();} //3
+        {RustPhastContender(N, 6, 320, true).run();} //2
+        {RustPhastContender(N, 6, 340, true).run();} //3
     
         //{RustPhastContender(N, 7, 350, true).run();} //3
         {RustPhastContender(N, 7, 370, true).run();} //1
-        //{RustPhastContender(N, 7, 390, true).run();} //2
+        {RustPhastContender(N, 7, 390, true).run();} //2
     
         {RustPhastContender(N, 8, 410, true).run();} //1
         {RustPhastContender(N, 8, 420, true).run();} //1
@@ -98,27 +98,27 @@ int main(int argc, char** argv) {
         {RustPhastContender(N, 8, 450, true).run();} //1
         //{RustPhastContender(N, 8, 460, true).run();} //3
     
-        //{RustPhastContender(N, 9, 510, true).run();} //2
-        //{RustPhastContender(N, 9, 530, true).run();} //2
+        {RustPhastContender(N, 9, 510, true).run();} //2
+        {RustPhastContender(N, 9, 530, true).run();} //2
     
         //{RustPhastContender(N, 10, 560, true).run();} //3
         //{RustPhastContender(N, 10, 580, true).run();} //3
         {RustPhastContender(N, 10, 600, true).run();} //1
     
-        //{RustPhastContender(N, 11, 630, true).run();} //2
-        //{RustPhastContender(N, 11, 650, true).run();} //2
+        {RustPhastContender(N, 11, 630, true).run();} //2
+        {RustPhastContender(N, 11, 650, true).run();} //2
         //{RustPhastContender(N, 11, 670, true).run();} //3
     
         //{RustPhastContender(N, 12, 680, true).run();}   // worse than (11, 630) //3
-        //{RustPhastContender(N, 12, 700, true).run();} //2
-        //{RustPhastContender(N, 12, 720, true).run();} //2
+        {RustPhastContender(N, 12, 700, true).run();} //2
+        {RustPhastContender(N, 12, 720, true).run();} //2
     }
 
     if (all || most || rustPhastContender || rustPhastContenderC) {
-        //{RustPhastContender(N, 8, 410, false).run();}  //2
+        {RustPhastContender(N, 8, 410, false).run();}  //2
         {RustPhastContender(N, 8, 420, false).run();}  //1
-        //{RustPhastContender(N, 8, 430, false).run();} //2
-        //{RustPhastContender(N, 8, 450, false).run();} //2
+        //{RustPhastContender(N, 8, 430, false).run();} //3
+        //{RustPhastContender(N, 8, 450, false).run();} //3
         //{RustPhastContender(N, 8, 460, false).run();} //3
     }
 
@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
 
     if (all || most || /*rest ||*/ rustPtrHashGxContender) {
         {RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_LINEAR_VEC, 3.0).run();} // Fast
-        //{RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_LINEAR_EF, 3.0).run();}    //2
+        {RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_LINEAR_EF, 3.0).run();}    //2
         {RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 3.5).run();}   // Default
         {RustPtrHashGxContender(N, RustPtrHashContender::VARIANT_CUBIC_EF, 4.0).run();}   // Compact
     }
@@ -141,23 +141,23 @@ int main(int argc, char** argv) {
         {PTHashContender<true, pthash::elias_fano>(N, 0.99, 5.0).run();}
     }
     
-    /*if (all || most || rest || partitionedPthash) {   //2
+    if (all || most || rest || partitionedPthash) {   //2
         {PartitionedPTHashContender<true, pthash::compact_compact>(N, 0.99, 4.0).run();}
         {PartitionedPTHashContender<true, pthash::elias_fano>(N, 0.99, 5.0).run();}
-    }*/
+    }
 
     if (all || most || rest || densePartitionedPtHash) {
-        //{PhobicContender<pthash::dense_interleaved<pthash::compact>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 3.9).run();}   //2
+        {PhobicContender<pthash::dense_interleaved<pthash::compact>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 3.9).run();}   //2
         {PhobicContender<pthash::dense_interleaved<pthash::rice>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 4.5).run();}
         {PhobicContender<pthash::dense_interleaved<pthash::rice>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 6.5).run();}
         {PhobicContender<pthash::dense_interleaved<pthash::compact>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 6.5).run();}
-        //{PhobicContender<pthash::dense_interleaved<pthash::rice>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 9.0).run();}  //2
+        {PhobicContender<pthash::dense_interleaved<pthash::rice>, pthash::table_bucketer<pthash::opt_bucketer>>(N, 1.0, 9.0).run();}  //2
     }
 
-    /*if (all || most || rest || rustFmphContender) {   //2
+    if (all || most || rest || rustFmphContender) {   //2
         {RustFmphGoContender(N, 1.0).run();}
         {RustFmphGoContender(N, 2.0).run();}
-    }*/
+    }
 
     if (all || most || rest || rustFmphGoContender) {
         {RustFmphContender(N, 1.0).run();}

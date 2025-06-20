@@ -42,7 +42,7 @@ void Contender::run(bool shouldPrintResult) {
     generateKeys(prng());
 
     std::cout << "Cooldown" << std::endl;
-    usleep(1000*1000);
+    usleep(5*1000*1000);
     std::cout << "Constructing" << std::endl;
 
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
@@ -63,8 +63,10 @@ void Contender::run(bool shouldPrintResult) {
     queryTimeMilliseconds = 0;
     if (numQueries > 0) {
         std::cout << "Cooldown" << std::endl;
-        usleep(1000*1000);
+        usleep(4*1000*1000);
         std::cout<<"Querying"<<std::endl;
+        //for (size_t i = 0; i < numQueries/3; ++i)
+        performQueries();
         begin = std::chrono::steady_clock::now();
         for (size_t i = 0; i < numQueries; ++i) performQueries();
         end = std::chrono::steady_clock::now();
