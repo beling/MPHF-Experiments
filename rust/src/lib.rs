@@ -1,6 +1,8 @@
 mod fmph_contender;
 mod fmph_go_contender;
 mod phast_contender;
+mod phast_plus_contender;
+mod phast_plus_wrapped_contender;
 mod ptr_hash_contender;
 mod ptr_hash_contender_gx;
 

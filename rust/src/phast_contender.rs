@@ -1,13 +1,13 @@
-use ph::{phast::{self, compressed_array::CompactFast, DefaultCompressedArray}, GetSize};
+use ph::{phast::{self, compressed_array::CompactFast, DefaultCompressedArray, Params, SeedOnly}, GetSize};
 use std::hint::black_box;
 
 pub enum PHastVariant {
-    BitsEF(phast::Function<ph::seeds::BitsFast, DefaultCompressedArray>),
-    Bits8EF(phast::Function<ph::seeds::Bits8, DefaultCompressedArray>),
-    Bits4EF(phast::Function<ph::seeds::TwoToPowerBitsStatic::<2>, DefaultCompressedArray>),
-    BitsC(phast::Function<ph::seeds::BitsFast, CompactFast>),
-    Bits8C(phast::Function<ph::seeds::Bits8, CompactFast>),
-    Bits4C(phast::Function<ph::seeds::TwoToPowerBitsStatic::<2>, CompactFast>),
+    BitsEF(phast::Function<ph::seeds::BitsFast, SeedOnly, DefaultCompressedArray>),
+    Bits8EF(phast::Function<ph::seeds::Bits8, SeedOnly, DefaultCompressedArray>),
+    Bits4EF(phast::Function<ph::seeds::TwoToPowerBitsStatic::<2>, SeedOnly, DefaultCompressedArray>),
+    BitsC(phast::Function<ph::seeds::BitsFast, SeedOnly, CompactFast>),
+    Bits8C(phast::Function<ph::seeds::Bits8, SeedOnly, CompactFast>),
+    Bits4C(phast::Function<ph::seeds::TwoToPowerBitsStatic::<2>, SeedOnly, CompactFast>),
     None
 }
 
@@ -22,48 +22,48 @@ pub extern "C" fn constructPhast(struct_ptr: *mut PHastVariant, keys_ptr: *const
     let f = unsafe { &mut *struct_ptr };
     let keys = unsafe { &*keys_ptr };
     *f = match (bits_per_seed, ef) {
-        (8, true) => PHastVariant::Bits8EF(phast::Function::with_slice_bps_bs_threads_hash(
+        (8, true) => PHastVariant::Bits8EF(phast::Function::with_slice_p_threads_hash_sc(
             &keys[..],
-            ph::seeds::Bits8,
-            bucket_size100,
+            &Params::new(ph::seeds::Bits8, bucket_size100),
             threads_num,
-            seedable_hash::BuildDefaultSeededHasher::default()
+            seedable_hash::BuildDefaultSeededHasher::default(),
+            SeedOnly
         )),
-        (4, true) => PHastVariant::Bits4EF(phast::Function::with_slice_bps_bs_threads_hash(
+        (4, true) => PHastVariant::Bits4EF(phast::Function::with_slice_p_threads_hash_sc(
             &keys[..],
-            ph::seeds::TwoToPowerBitsStatic::<2>,
-            bucket_size100,
+            &Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
             threads_num,
-            seedable_hash::BuildDefaultSeededHasher::default()
+            seedable_hash::BuildDefaultSeededHasher::default(),
+            SeedOnly
         )),
-        (_, true) => PHastVariant::BitsEF(phast::Function::with_slice_bps_bs_threads_hash(
+        (_, true) => PHastVariant::BitsEF(phast::Function::with_slice_p_threads_hash_sc(
             &keys[..],
-            ph::seeds::BitsFast(bits_per_seed),
-            bucket_size100,
+            &Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
             threads_num,
-            seedable_hash::BuildDefaultSeededHasher::default()
+            seedable_hash::BuildDefaultSeededHasher::default(),
+            SeedOnly
         )),
 
-        (8, false) => PHastVariant::Bits8C(phast::Function::with_slice_bps_bs_threads_hash(
+        (8, false) => PHastVariant::Bits8C(phast::Function::with_slice_p_threads_hash_sc(
             &keys[..],
-            ph::seeds::Bits8,
-            bucket_size100,
+            &Params::new(ph::seeds::Bits8, bucket_size100),
             threads_num,
-            seedable_hash::BuildDefaultSeededHasher::default()
+            seedable_hash::BuildDefaultSeededHasher::default(),
+            SeedOnly
         )),
-        (4, false) => PHastVariant::Bits4C(phast::Function::with_slice_bps_bs_threads_hash(
+        (4, false) => PHastVariant::Bits4C(phast::Function::with_slice_p_threads_hash_sc(
             &keys[..],
-            ph::seeds::TwoToPowerBitsStatic::<2>,
-            bucket_size100,
+            &phast::Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
             threads_num,
-            seedable_hash::BuildDefaultSeededHasher::default()
+            seedable_hash::BuildDefaultSeededHasher::default(),
+            SeedOnly
         )),
-        (_, false) => PHastVariant::BitsC(phast::Function::with_slice_bps_bs_threads_hash(
+        (_, false) => PHastVariant::BitsC(phast::Function::with_slice_p_threads_hash_sc(
             &keys[..],
-            ph::seeds::BitsFast(bits_per_seed),
-            bucket_size100,
+            &phast::Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
             threads_num,
-            seedable_hash::BuildDefaultSeededHasher::default()
+            seedable_hash::BuildDefaultSeededHasher::default(),
+            SeedOnly
         )),
     }
 }
@@ -80,7 +80,6 @@ pub extern "C" fn queryPhast(struct_ptr: *const PHastVariant, keys_ptr: *const B
         PHastVariant::Bits8C(function) => function.get(key) as u64,
         PHastVariant::Bits4C(function) => function.get(key) as u64,
         PHastVariant::None => panic!("PHast not constructed yet"),
-        
     }
 }
 
@@ -129,4 +128,3 @@ pub extern "C" fn sizePhast(struct_ptr: *const PHastVariant) -> usize {
 pub extern "C" fn destroyPhastStruct(struct_instance: *mut PHastVariant) {
     unsafe { let _ = Box::from_raw(struct_instance); }
 }
-
