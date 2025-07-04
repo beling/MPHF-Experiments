@@ -11,6 +11,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
     #set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
 
+set(LLVM_BUILD_STATIC ON)
+
 ###################### Competitor setup ######################
 add_library(PerfectHashingCompetitors INTERFACE)
 target_compile_features(PerfectHashingCompetitors INTERFACE cxx_std_20)
