@@ -2,26 +2,26 @@ use ph::{phast::{self, compressed_array::CompactFast, DefaultCompressedArray, Pa
 use std::hint::black_box;
 
 pub enum PHastPlusWrappedVariant {
-    BitsEF(phast::Function<ph::seeds::BitsFast, ShiftOnlyWrapped<1>, DefaultCompressedArray>),
-    Bits8EF(phast::Function<ph::seeds::Bits8, ShiftOnlyWrapped<1>, DefaultCompressedArray>),
-    Bits4EF(phast::Function<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<1>, DefaultCompressedArray>),
-    BitsC(phast::Function<ph::seeds::BitsFast, ShiftOnlyWrapped<1>, CompactFast>),
-    Bits8C(phast::Function<ph::seeds::Bits8, ShiftOnlyWrapped<1>, CompactFast>),
-    Bits4C(phast::Function<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<1>, CompactFast>),
+    BitsEF(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<1>, DefaultCompressedArray>),
+    Bits8EF(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<1>, DefaultCompressedArray>),
+    Bits4EF(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<1>, DefaultCompressedArray>),
+    BitsC(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<1>, CompactFast>),
+    Bits8C(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<1>, CompactFast>),
+    Bits4C(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<1>, CompactFast>),
 
-    BitsEF2(phast::Function<ph::seeds::BitsFast, ShiftOnlyWrapped<2>, DefaultCompressedArray>),
-    Bits8EF2(phast::Function<ph::seeds::Bits8, ShiftOnlyWrapped<2>, DefaultCompressedArray>),
-    Bits4EF2(phast::Function<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<2>, DefaultCompressedArray>),
-    BitsC2(phast::Function<ph::seeds::BitsFast, ShiftOnlyWrapped<2>, CompactFast>),
-    Bits8C2(phast::Function<ph::seeds::Bits8, ShiftOnlyWrapped<2>, CompactFast>),
-    Bits4C2(phast::Function<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<2>, CompactFast>),
+    BitsEF2(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<2>, DefaultCompressedArray>),
+    Bits8EF2(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<2>, DefaultCompressedArray>),
+    Bits4EF2(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<2>, DefaultCompressedArray>),
+    BitsC2(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<2>, CompactFast>),
+    Bits8C2(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<2>, CompactFast>),
+    Bits4C2(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<2>, CompactFast>),
 
-    BitsEF3(phast::Function<ph::seeds::BitsFast, ShiftOnlyWrapped<3>, DefaultCompressedArray>),
-    Bits8EF3(phast::Function<ph::seeds::Bits8, ShiftOnlyWrapped<3>, DefaultCompressedArray>),
-    Bits4EF3(phast::Function<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<3>, DefaultCompressedArray>),
-    BitsC3(phast::Function<ph::seeds::BitsFast, ShiftOnlyWrapped<3>, CompactFast>),
-    Bits8C3(phast::Function<ph::seeds::Bits8, ShiftOnlyWrapped<3>, CompactFast>),
-    Bits4C3(phast::Function<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<3>, CompactFast>),
+    BitsEF3(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<3>, DefaultCompressedArray>),
+    Bits8EF3(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<3>, DefaultCompressedArray>),
+    Bits4EF3(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<3>, DefaultCompressedArray>),
+    BitsC3(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<3>, CompactFast>),
+    Bits8C3(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<3>, CompactFast>),
+    Bits4C3(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<3>, CompactFast>),
     None
 }
 
@@ -36,80 +36,80 @@ pub extern "C" fn constructPhastPlusWrapped(struct_ptr: *mut PHastPlusWrappedVar
     let f = unsafe { &mut *struct_ptr };
     let keys = unsafe { &*keys_ptr };
     *f = match (multiplier, bits_per_seed, ef) {
-        (1, 8, true) => PHastPlusWrappedVariant::Bits8EF(phast::Function::with_slice_p_threads_hash_sc(
+        (1, 8, true) => PHastPlusWrappedVariant::Bits8EF(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<1>
         )),
-        (1, 4, true) => PHastPlusWrappedVariant::Bits4EF(phast::Function::with_slice_p_threads_hash_sc(
+        (1, 4, true) => PHastPlusWrappedVariant::Bits4EF(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<1>
         )),
-        (1, _, true) => PHastPlusWrappedVariant::BitsEF(phast::Function::with_slice_p_threads_hash_sc(
+        (1, _, true) => PHastPlusWrappedVariant::BitsEF(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<1>
         )),
 
-        (1, 8, false) => PHastPlusWrappedVariant::Bits8C(phast::Function::with_slice_p_threads_hash_sc(
+        (1, 8, false) => PHastPlusWrappedVariant::Bits8C(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<1>
         )),
-        (1, 4, false) => PHastPlusWrappedVariant::Bits4C(phast::Function::with_slice_p_threads_hash_sc(
+        (1, 4, false) => PHastPlusWrappedVariant::Bits4C(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &phast::Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<1>
         )),
-        (1, _, false) => PHastPlusWrappedVariant::BitsC(phast::Function::with_slice_p_threads_hash_sc(
+        (1, _, false) => PHastPlusWrappedVariant::BitsC(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &phast::Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<1>
         )),
 
-        (2, 8, true) => PHastPlusWrappedVariant::Bits8EF2(phast::Function::with_slice_p_threads_hash_sc(
+        (2, 8, true) => PHastPlusWrappedVariant::Bits8EF2(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<2>
         )),
-        (2, 4, true) => PHastPlusWrappedVariant::Bits4EF2(phast::Function::with_slice_p_threads_hash_sc(
+        (2, 4, true) => PHastPlusWrappedVariant::Bits4EF2(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<2>
         )),
-        (2, _, true) => PHastPlusWrappedVariant::BitsEF2(phast::Function::with_slice_p_threads_hash_sc(
+        (2, _, true) => PHastPlusWrappedVariant::BitsEF2(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<2>
         )),
 
-        (2, 8, false) => PHastPlusWrappedVariant::Bits8C2(phast::Function::with_slice_p_threads_hash_sc(
+        (2, 8, false) => PHastPlusWrappedVariant::Bits8C2(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<2>
         )),
-        (2, 4, false) => PHastPlusWrappedVariant::Bits4C2(phast::Function::with_slice_p_threads_hash_sc(
+        (2, 4, false) => PHastPlusWrappedVariant::Bits4C2(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &phast::Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<2>
         )),
-        (2, _, false) => PHastPlusWrappedVariant::BitsC2(phast::Function::with_slice_p_threads_hash_sc(
+        (2, _, false) => PHastPlusWrappedVariant::BitsC2(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &phast::Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<2>
         )),
 
-        (3, 8, true) => PHastPlusWrappedVariant::Bits8EF3(phast::Function::with_slice_p_threads_hash_sc(
+        (3, 8, true) => PHastPlusWrappedVariant::Bits8EF3(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<3>
         )),
-        (3, 4, true) => PHastPlusWrappedVariant::Bits4EF3(phast::Function::with_slice_p_threads_hash_sc(
+        (3, 4, true) => PHastPlusWrappedVariant::Bits4EF3(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<3>
         )),
-        (3, _, true) => PHastPlusWrappedVariant::BitsEF3(phast::Function::with_slice_p_threads_hash_sc(
+        (3, _, true) => PHastPlusWrappedVariant::BitsEF3(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<3>
         )),
 
-        (3, 8, false) => PHastPlusWrappedVariant::Bits8C3(phast::Function::with_slice_p_threads_hash_sc(
+        (3, 8, false) => PHastPlusWrappedVariant::Bits8C3(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<3>
         )),
-        (3, 4, false) => PHastPlusWrappedVariant::Bits4C3(phast::Function::with_slice_p_threads_hash_sc(
+        (3, 4, false) => PHastPlusWrappedVariant::Bits4C3(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &phast::Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<3>
         )),
-        (3, _, false) => PHastPlusWrappedVariant::BitsC3(phast::Function::with_slice_p_threads_hash_sc(
+        (3, _, false) => PHastPlusWrappedVariant::BitsC3(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &phast::Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<3>
         )),
@@ -148,7 +148,7 @@ pub extern "C" fn queryPhastPlusWrapped(struct_ptr: *const PHastPlusWrappedVaria
     }
 }
 
-/*#[inline(always)] fn query_all<SS, CA, S>(function: &phast::Function<SS, CA, S>, keys: &[Box<[u8]>])
+/*#[inline(always)] fn query_all<SS, CA, S>(function: &phast::Function2<SS, CA, S>, keys: &[Box<[u8]>])
     where SS: ph::fmph::SeedSize, CA: phast::CompressedArray, S: ph::BuildSeededHasher 
 {
     for key in keys {
