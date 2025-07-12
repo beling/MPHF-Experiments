@@ -138,7 +138,7 @@ class RustPhastPlusWrappedContender : public RustContender {
         }
 
         std::string name() override {
-            return std::string("RustPHast+wrapped")
+            return std::string("RustPHast+wrap")
                 + " multiplier=" + std::to_string(multiplier)
                 + " bits_per_seed=" + std::to_string(bits_per_seed)
                 + " bucket_size100=" + std::to_string(bucket_size100)

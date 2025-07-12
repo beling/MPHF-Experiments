@@ -4,24 +4,18 @@ use std::hint::black_box;
 pub enum PHastPlusWrappedVariant {
     BitsEF(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<1>, DefaultCompressedArray>),
     Bits8EF(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<1>, DefaultCompressedArray>),
-    Bits4EF(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<1>, DefaultCompressedArray>),
     BitsC(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<1>, CompactFast>),
     Bits8C(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<1>, CompactFast>),
-    Bits4C(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<1>, CompactFast>),
 
     BitsEF2(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<2>, DefaultCompressedArray>),
     Bits8EF2(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<2>, DefaultCompressedArray>),
-    Bits4EF2(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<2>, DefaultCompressedArray>),
     BitsC2(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<2>, CompactFast>),
     Bits8C2(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<2>, CompactFast>),
-    Bits4C2(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<2>, CompactFast>),
 
     BitsEF3(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<3>, DefaultCompressedArray>),
     Bits8EF3(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<3>, DefaultCompressedArray>),
-    Bits4EF3(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<3>, DefaultCompressedArray>),
     BitsC3(phast::Function2<ph::seeds::BitsFast, ShiftOnlyWrapped<3>, CompactFast>),
     Bits8C3(phast::Function2<ph::seeds::Bits8, ShiftOnlyWrapped<3>, CompactFast>),
-    Bits4C3(phast::Function2<ph::seeds::TwoToPowerBitsStatic::<2>, ShiftOnlyWrapped<3>, CompactFast>),
     None
 }
 
@@ -40,10 +34,6 @@ pub extern "C" fn constructPhastPlusWrapped(struct_ptr: *mut PHastPlusWrappedVar
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<1>
         )),
-        (1, 4, true) => PHastPlusWrappedVariant::Bits4EF(phast::Function2::with_slice_p_threads_hash_sc(
-            &keys[..], &Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
-            threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<1>
-        )),
         (1, _, true) => PHastPlusWrappedVariant::BitsEF(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<1>
@@ -52,10 +42,6 @@ pub extern "C" fn constructPhastPlusWrapped(struct_ptr: *mut PHastPlusWrappedVar
         (1, 8, false) => PHastPlusWrappedVariant::Bits8C(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<1>
-        )),
-        (1, 4, false) => PHastPlusWrappedVariant::Bits4C(phast::Function2::with_slice_p_threads_hash_sc(
-            &keys[..], &phast::Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
-            threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<1>
         )),
         (1, _, false) => PHastPlusWrappedVariant::BitsC(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &phast::Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
@@ -66,10 +52,6 @@ pub extern "C" fn constructPhastPlusWrapped(struct_ptr: *mut PHastPlusWrappedVar
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<2>
         )),
-        (2, 4, true) => PHastPlusWrappedVariant::Bits4EF2(phast::Function2::with_slice_p_threads_hash_sc(
-            &keys[..], &Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
-            threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<2>
-        )),
         (2, _, true) => PHastPlusWrappedVariant::BitsEF2(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<2>
@@ -78,10 +60,6 @@ pub extern "C" fn constructPhastPlusWrapped(struct_ptr: *mut PHastPlusWrappedVar
         (2, 8, false) => PHastPlusWrappedVariant::Bits8C2(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<2>
-        )),
-        (2, 4, false) => PHastPlusWrappedVariant::Bits4C2(phast::Function2::with_slice_p_threads_hash_sc(
-            &keys[..], &phast::Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
-            threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<2>
         )),
         (2, _, false) => PHastPlusWrappedVariant::BitsC2(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &phast::Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
@@ -92,10 +70,6 @@ pub extern "C" fn constructPhastPlusWrapped(struct_ptr: *mut PHastPlusWrappedVar
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<3>
         )),
-        (3, 4, true) => PHastPlusWrappedVariant::Bits4EF3(phast::Function2::with_slice_p_threads_hash_sc(
-            &keys[..], &Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
-            threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<3>
-        )),
         (3, _, true) => PHastPlusWrappedVariant::BitsEF3(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
             threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<3>
@@ -104,10 +78,6 @@ pub extern "C" fn constructPhastPlusWrapped(struct_ptr: *mut PHastPlusWrappedVar
         (3, 8, false) => PHastPlusWrappedVariant::Bits8C3(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
             seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<3>
-        )),
-        (3, 4, false) => PHastPlusWrappedVariant::Bits4C3(phast::Function2::with_slice_p_threads_hash_sc(
-            &keys[..], &phast::Params::new(ph::seeds::TwoToPowerBitsStatic::<2>, bucket_size100),
-            threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnlyWrapped::<3>
         )),
         (3, _, false) => PHastPlusWrappedVariant::BitsC3(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &phast::Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
@@ -125,24 +95,18 @@ pub extern "C" fn queryPhastPlusWrapped(struct_ptr: *const PHastPlusWrappedVaria
     match unsafe { &*struct_ptr } {
         PHastPlusWrappedVariant::BitsEF(function) => function.get(key) as u64,
         PHastPlusWrappedVariant::Bits8EF(function) => function.get(key) as u64,
-        PHastPlusWrappedVariant::Bits4EF(function) => function.get(key) as u64,
         PHastPlusWrappedVariant::BitsC(function) => function.get(key) as u64,
         PHastPlusWrappedVariant::Bits8C(function) => function.get(key) as u64,
-        PHastPlusWrappedVariant::Bits4C(function) => function.get(key) as u64,
         
         PHastPlusWrappedVariant::BitsEF2(function) => function.get(key) as u64,
         PHastPlusWrappedVariant::Bits8EF2(function) => function.get(key) as u64,
-        PHastPlusWrappedVariant::Bits4EF2(function) => function.get(key) as u64,
         PHastPlusWrappedVariant::BitsC2(function) => function.get(key) as u64,
         PHastPlusWrappedVariant::Bits8C2(function) => function.get(key) as u64,
-        PHastPlusWrappedVariant::Bits4C2(function) => function.get(key) as u64,
         
         PHastPlusWrappedVariant::BitsEF3(function) => function.get(key) as u64,
         PHastPlusWrappedVariant::Bits8EF3(function) => function.get(key) as u64,
-        PHastPlusWrappedVariant::Bits4EF3(function) => function.get(key) as u64,
         PHastPlusWrappedVariant::BitsC3(function) => function.get(key) as u64,
         PHastPlusWrappedVariant::Bits8C3(function) => function.get(key) as u64,
-        PHastPlusWrappedVariant::Bits4C3(function) => function.get(key) as u64,
         
         PHastPlusWrappedVariant::None => panic!("PHast+ not constructed yet"),
     }
@@ -164,39 +128,27 @@ pub extern "C" fn queryPhastPlusWrappedAll(struct_ptr: *const PHastPlusWrappedVa
             for key in keys { black_box(function.get(key.as_ref())); },
         PHastPlusWrappedVariant::Bits8EF(function) =>  //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
-        PHastPlusWrappedVariant::Bits4EF(function) =>  //query_all(function, &keys),
-            for key in keys { black_box(function.get(key.as_ref())); },
         PHastPlusWrappedVariant::BitsC(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
         PHastPlusWrappedVariant::Bits8C(function) => //query_all(function, &keys),
-            for key in keys { black_box(function.get(key.as_ref())); },
-        PHastPlusWrappedVariant::Bits4C(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
 
         PHastPlusWrappedVariant::BitsEF2(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
         PHastPlusWrappedVariant::Bits8EF2(function) =>  //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
-        PHastPlusWrappedVariant::Bits4EF2(function) =>  //query_all(function, &keys),
-            for key in keys { black_box(function.get(key.as_ref())); },
         PHastPlusWrappedVariant::BitsC2(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
         PHastPlusWrappedVariant::Bits8C2(function) => //query_all(function, &keys),
-            for key in keys { black_box(function.get(key.as_ref())); },
-        PHastPlusWrappedVariant::Bits4C2(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
 
         PHastPlusWrappedVariant::BitsEF3(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
         PHastPlusWrappedVariant::Bits8EF3(function) =>  //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
-        PHastPlusWrappedVariant::Bits4EF3(function) =>  //query_all(function, &keys),
-            for key in keys { black_box(function.get(key.as_ref())); },
         PHastPlusWrappedVariant::BitsC3(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
         PHastPlusWrappedVariant::Bits8C3(function) => //query_all(function, &keys),
-            for key in keys { black_box(function.get(key.as_ref())); },
-        PHastPlusWrappedVariant::Bits4C3(function) => //query_all(function, &keys),
             for key in keys { black_box(function.get(key.as_ref())); },
         PHastPlusWrappedVariant::None => panic!("PHast+ not constructed yet"),
     }
@@ -207,24 +159,18 @@ pub extern "C" fn sizePhastPlusWrapped(struct_ptr: *const PHastPlusWrappedVarian
     match unsafe { &*struct_ptr } {
         PHastPlusWrappedVariant::BitsEF(function) => function.size_bytes(),
         PHastPlusWrappedVariant::Bits8EF(function) => function.size_bytes(),
-        PHastPlusWrappedVariant::Bits4EF(function) => function.size_bytes(),
         PHastPlusWrappedVariant::BitsC(function) => function.size_bytes(),
         PHastPlusWrappedVariant::Bits8C(function) => function.size_bytes(),
-        PHastPlusWrappedVariant::Bits4C(function) => function.size_bytes(),
         
         PHastPlusWrappedVariant::BitsEF2(function) => function.size_bytes(),
         PHastPlusWrappedVariant::Bits8EF2(function) => function.size_bytes(),
-        PHastPlusWrappedVariant::Bits4EF2(function) => function.size_bytes(),
         PHastPlusWrappedVariant::BitsC2(function) => function.size_bytes(),
         PHastPlusWrappedVariant::Bits8C2(function) => function.size_bytes(),
-        PHastPlusWrappedVariant::Bits4C2(function) => function.size_bytes(),
         
         PHastPlusWrappedVariant::BitsEF3(function) => function.size_bytes(),
         PHastPlusWrappedVariant::Bits8EF3(function) => function.size_bytes(),
-        PHastPlusWrappedVariant::Bits4EF3(function) => function.size_bytes(),
         PHastPlusWrappedVariant::BitsC3(function) => function.size_bytes(),
         PHastPlusWrappedVariant::Bits8C3(function) => function.size_bytes(),
-        PHastPlusWrappedVariant::Bits4C3(function) => function.size_bytes(),
 
         PHastPlusWrappedVariant::None => panic!("PHast+ not constructed yet"),
     }

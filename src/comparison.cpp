@@ -58,6 +58,9 @@ int main(int argc, char** argv) {
     bool rustPhastContender = false;
     bool rustPhastContenderEF = false;
     bool rustPhastContenderC = false;
+    bool rustPhastPlusWrapContender = false;
+    bool rustPhastPlusWrapContenderEF = false;
+    bool rustPhastPlusWrapContenderC = false;
     bool rustPtrHashContender = false;
     bool rustPtrHashGxContender = false;
     bool sichashOnlyPartial = false;
@@ -107,6 +110,9 @@ int main(int argc, char** argv) {
     cmd.add_flag("rustPHast", rustPhastContender, "Execute rust PHast benchmark");
     cmd.add_flag("rustPHastEF", rustPhastContenderEF, "Execute rust PHast with EF encoding benchmark");
     cmd.add_flag("rustPHastC", rustPhastContenderC, "Execute rust PHast with C encoding benchmark");
+    cmd.add_flag("rustPHastPlusWrap", rustPhastPlusWrapContender, "Execute rust PHast+wrap benchmark");
+    cmd.add_flag("rustPHastPlusWrapEF", rustPhastPlusWrapContenderEF, "Execute rust PHast+wrap with EF encoding benchmark");
+    cmd.add_flag("rustPHastPlusWrapC", rustPhastPlusWrapContenderC, "Execute rust PHast+wrap with C encoding benchmark");
     cmd.add_flag("rustPtrHash", rustPtrHashContender, "Execute rust ptrhash benchmark");
     cmd.add_flag("rustPtrHashGx", rustPtrHashGxContender, "Execute rust ptrhash with gxhash benchmark");
     cmd.add_flag("gpuPhobic", gpuPhobic, "Execute Phobic on the GPU benchmark");
@@ -125,8 +131,14 @@ int main(int argc, char** argv) {
     if (rustPhastContender || rustPhastContenderEF) {
         rustPHastContenderRunnerWithEf(N, true);
     }
-    if (rustPtrHashContender || rustPhastContenderC) {
+    if (rustPhastContender || rustPhastContenderC) {
         rustPHastContenderRunnerWithEf(N, false);
+    }
+    if (rustPhastPlusWrapContender || rustPhastPlusWrapContenderEF) {
+        rustPHastPlusWrappedContenderRunnerWithEf(N, true);
+    }
+    if (rustPhastPlusWrapContender || rustPhastPlusWrapContenderC) {
+        rustPHastPlusWrappedContenderRunnerWithEf(N, false);
     }
     if (rustPtrHashGxContender) {
         rustPtrHashGxContenderRunner(N);
