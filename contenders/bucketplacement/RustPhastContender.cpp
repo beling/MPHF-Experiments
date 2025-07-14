@@ -122,18 +122,60 @@ void rustPHastPlusContenderRunner(size_t N) {
 }
 
 void rustPHastPlusWrappedContenderRunnerWithEf(size_t N, bool use_ef) {
+    // ---------- multiplier 1 ----------
+    for (size_t bucket_size_100 = 350-50; bucket_size_100 <= 535+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 1, 8, bucket_size_100, 512, use_ef).run();
     for (size_t bucket_size_100 = 350; bucket_size_100 <= 535; bucket_size_100 += 5)
-        RustPhastPlusWrappedContender(N, 1, 8, bucket_size_100, use_ef).run();
+        RustPhastPlusWrappedContender(N, 1, 8, bucket_size_100, 1024, use_ef).run();
+
     for (size_t bucket_size_100 = 440; bucket_size_100 <= 575; bucket_size_100 += 5)
-        RustPhastPlusWrappedContender(N, 1, 9, bucket_size_100, use_ef).run();
+        RustPhastPlusWrappedContender(N, 1, 9, bucket_size_100, 0, use_ef).run();
+
+    for (size_t bucket_size_100 = 410-50; bucket_size_100 <= 635+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 1, 10, bucket_size_100, 1024, use_ef).run();
     for (size_t bucket_size_100 = 410; bucket_size_100 <= 635; bucket_size_100 += 5)
-        RustPhastPlusWrappedContender(N, 1, 10, bucket_size_100, use_ef).run();
+        RustPhastPlusWrappedContender(N, 1, 10, bucket_size_100, 2048, use_ef).run();
+    
     for (size_t bucket_size_100 = 410; bucket_size_100 <= 685; bucket_size_100 += 5)
-        RustPhastPlusWrappedContender(N, 1, 11, bucket_size_100, use_ef).run();
+        RustPhastPlusWrappedContender(N, 1, 11, bucket_size_100, 0, use_ef).run();
+
     for (size_t bucket_size_100 = 450; bucket_size_100 <= 740; bucket_size_100 += 5)
-        RustPhastPlusWrappedContender(N, 1, 12, bucket_size_100, use_ef).run();
-    for (size_t bucket_size_100 = 500; bucket_size_100 <= 800; bucket_size_100 += 5) //??
-        RustPhastPlusWrappedContender(N, 1, 13, bucket_size_100, use_ef).run();
+        RustPhastPlusWrappedContender(N, 1, 12, bucket_size_100, 0, use_ef).run();
+
+
+    // ---------- multiplier 2 ----------
+    for (size_t bucket_size_100 = 350-50; bucket_size_100 <= 535+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 2, 8, bucket_size_100, 0, use_ef).run();
+
+    for (size_t bucket_size_100 = 440-50; bucket_size_100 <= 575+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 2, 9, bucket_size_100, 1024, use_ef).run();
+    for (size_t bucket_size_100 = 440-50; bucket_size_100 <= 575+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 2, 9, bucket_size_100, 2048, use_ef).run();
+
+    for (size_t bucket_size_100 = 410-50; bucket_size_100 <= 635+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 2, 10, bucket_size_100, 0, use_ef).run();
+
+    for (size_t bucket_size_100 = 410-50; bucket_size_100 <= 685+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 2, 11, bucket_size_100, 0, use_ef).run();
+
+
+    // ---------- multiplier 3 ----------
+    for (size_t bucket_size_100 = 350-50; bucket_size_100 <= 535+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 3, 8, bucket_size_100, 0, use_ef).run();
+    
+    for (size_t bucket_size_100 = 440-50; bucket_size_100 <= 575+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 3, 9, bucket_size_100, 0, use_ef).run();
+
+    for (size_t bucket_size_100 = 410-50; bucket_size_100 <= 635+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 3, 10, bucket_size_100, 2048, use_ef).run();
+    for (size_t bucket_size_100 = 410-50; bucket_size_100 <= 635+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 3, 10, bucket_size_100, 4096, use_ef).run();
+
+    for (size_t bucket_size_100 = 410-50; bucket_size_100 <= 685+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 3, 11, bucket_size_100, 0, use_ef).run();
+
+    for (size_t bucket_size_100 = 450-50; bucket_size_100 <= 740+50; bucket_size_100 += 5)
+        RustPhastPlusWrappedContender(N, 3, 12, bucket_size_100, 0, use_ef).run();
 }
 
 void rustPHastPlusWrappedContenderRunner(size_t N) {

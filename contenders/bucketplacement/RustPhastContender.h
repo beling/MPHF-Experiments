@@ -19,7 +19,7 @@ extern "C" {
     void destroyPhastPlusStruct(void *rustStruct);
 
     void *createPhastPlusWrappedStruct();
-    void constructPhastPlusWrapped(void *rustStruct, void *keysStruct, uint8_t multiplier, uint8_t bits_per_seed, uint16_t bucket_size100, size_t threads, bool ef);
+    void constructPhastPlusWrapped(void *rustStruct, void *keysStruct, uint8_t multiplier, uint8_t bits_per_seed, uint16_t bucket_size100, uint16_t preferred_slice_len, size_t threads, bool ef);
     uint64_t queryPhastPlusWrapped(void *rustStruct, void *keysStruct, size_t index);
     void queryPhastPlusWrappedAll(void *rustStruct, void *keysStruct);
     size_t sizePhastPlusWrapped(void *rustStruct);
@@ -126,10 +126,13 @@ class RustPhastPlusWrappedContender : public RustContender {
         uint8_t multiplier;
         uint8_t bits_per_seed;
         uint16_t bucket_size100;
+        uint16_t preferred_slice_len;
         bool use_ef;
     public:
-        RustPhastPlusWrappedContender(size_t N, uint8_t multiplier, uint8_t bits_per_seed, uint16_t bucket_size100, bool use_ef)
-            : RustContender(N), multiplier(multiplier), bits_per_seed(bits_per_seed), bucket_size100(bucket_size100), use_ef(use_ef) {
+        RustPhastPlusWrappedContender(size_t N, uint8_t multiplier, uint8_t bits_per_seed, uint16_t bucket_size100, uint16_t preferred_slice_len, bool use_ef)
+            : RustContender(N), multiplier(multiplier), bits_per_seed(bits_per_seed), bucket_size100(bucket_size100),
+                preferred_slice_len(preferred_slice_len), use_ef(use_ef)
+        {
             rustStruct = createPhastPlusWrappedStruct();
         }
 
@@ -142,11 +145,12 @@ class RustPhastPlusWrappedContender : public RustContender {
                 + " multiplier=" + std::to_string(multiplier)
                 + " bits_per_seed=" + std::to_string(bits_per_seed)
                 + " bucket_size100=" + std::to_string(bucket_size100)
+                + " preferred_slice_len=" + std::to_string(preferred_slice_len)
                 + " encoder=" + (use_ef ? "EF" : "C");
         }
 
         void construct() override {
-            constructPhastPlusWrapped(rustStruct, keysRustWrapper, multiplier, bits_per_seed, bucket_size100, numThreads, use_ef);
+            constructPhastPlusWrapped(rustStruct, keysRustWrapper, multiplier, bits_per_seed, bucket_size100, preferred_slice_len, numThreads, use_ef);
         }
 
         size_t sizeBits() override {
