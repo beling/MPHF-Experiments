@@ -58,6 +58,9 @@ int main(int argc, char** argv) {
     bool rustPhastContender = false;
     bool rustPhastContenderEF = false;
     bool rustPhastContenderC = false;
+    bool rustPhastPlusContender = false;
+    bool rustPhastPlusContenderEF = false;
+    bool rustPhastPlusContenderC = false;
     bool rustPhastPlusWrapContender = false;
     bool rustPhastPlusWrapContenderEF = false;
     bool rustPhastPlusWrapContenderC = false;
@@ -110,6 +113,9 @@ int main(int argc, char** argv) {
     cmd.add_flag("rustPHast", rustPhastContender, "Execute rust PHast benchmark");
     cmd.add_flag("rustPHastEF", rustPhastContenderEF, "Execute rust PHast with EF encoding benchmark");
     cmd.add_flag("rustPHastC", rustPhastContenderC, "Execute rust PHast with C encoding benchmark");
+    cmd.add_flag("rustPHastPlus", rustPhastPlusContender, "Execute rust PHast+wrap benchmark");
+    cmd.add_flag("rustPHastPlusEF", rustPhastPlusContenderEF, "Execute rust PHast+wrap with EF encoding benchmark");
+    cmd.add_flag("rustPHastPlusC", rustPhastPlusContenderC, "Execute rust PHast+wrap with C encoding benchmark");
     cmd.add_flag("rustPHastPlusWrap", rustPhastPlusWrapContender, "Execute rust PHast+wrap benchmark");
     cmd.add_flag("rustPHastPlusWrapEF", rustPhastPlusWrapContenderEF, "Execute rust PHast+wrap with EF encoding benchmark");
     cmd.add_flag("rustPHastPlusWrapC", rustPhastPlusWrapContenderC, "Execute rust PHast+wrap with C encoding benchmark");
@@ -133,6 +139,12 @@ int main(int argc, char** argv) {
     }
     if (rustPhastContender || rustPhastContenderC) {
         rustPHastContenderRunnerWithEf(N, false);
+    }
+    if (rustPhastPlusContender || rustPhastPlusContenderEF) {
+        rustPHastPlusContenderRunnerWithEf(N, true);
+    }
+    if (rustPhastPlusContender || rustPhastPlusContenderC) {
+        rustPHastPlusContenderRunnerWithEf(N, false);
     }
     if (rustPhastPlusWrapContender || rustPhastPlusWrapContenderEF) {
         rustPHastPlusWrappedContenderRunnerWithEf(N, true);
