@@ -12,7 +12,7 @@ extern "C" {
     void destroyPhastStruct(void *rustStruct);
 
     void *createPhastPlusStruct();
-    void constructPhastPlus(void *rustStruct, void *keysStruct, uint8_t multiplier, uint8_t bits_per_seed, uint16_t bucket_size100, size_t threads, bool ef);
+    void constructPhastPlus(void *rustStruct, void *keysStruct, uint8_t bits_per_seed, uint16_t bucket_size100, size_t threads, bool ef);
     uint64_t queryPhastPlus(void *rustStruct, void *keysStruct, size_t index);
     void queryPhastPlusAll(void *rustStruct, void *keysStruct);
     size_t sizePhastPlus(void *rustStruct);
@@ -75,13 +75,12 @@ void rustPHastContenderRunner(size_t N);
 class RustPhastPlusContender : public RustContender {
     protected:
         void *rustStruct = nullptr;
-        uint8_t multiplier;
         uint8_t bits_per_seed;
         uint16_t bucket_size100;
         bool use_ef;
     public:
-        RustPhastPlusContender(size_t N, uint8_t multiplier, uint8_t bits_per_seed, uint16_t bucket_size100, bool use_ef)
-            : RustContender(N), multiplier(multiplier), bits_per_seed(bits_per_seed), bucket_size100(bucket_size100), use_ef(use_ef) {
+        RustPhastPlusContender(size_t N, uint8_t bits_per_seed, uint16_t bucket_size100, bool use_ef)
+            : RustContender(N), bits_per_seed(bits_per_seed), bucket_size100(bucket_size100), use_ef(use_ef) {
             rustStruct = createPhastPlusStruct();
         }
 
@@ -91,14 +90,13 @@ class RustPhastPlusContender : public RustContender {
 
         std::string name() override {
             return std::string("RustPHast+")
-                + " multiplier=" + std::to_string(multiplier)
                 + " bits_per_seed=" + std::to_string(bits_per_seed)
                 + " bucket_size100=" + std::to_string(bucket_size100)
                 + " encoder=" + (use_ef ? "EF" : "C");
         }
 
         void construct() override {
-            constructPhastPlus(rustStruct, keysRustWrapper, multiplier, bits_per_seed, bucket_size100, numThreads, use_ef);
+            constructPhastPlus(rustStruct, keysRustWrapper, bits_per_seed, bucket_size100, numThreads, use_ef);
         }
 
         size_t sizeBits() override {
