@@ -40,6 +40,9 @@ int main(int argc, char** argv) {
     bool rustPhastContender = false;
     bool rustPhastContenderEF = false;
     bool rustPhastContenderC = false;
+    bool rustPhastPlusContender = false;
+    bool rustPhastPlusContenderEF = false;
+    bool rustPhastPlusContenderC = false;
     bool rustPtrHashContender = false;
     bool rustPtrHashGxContender = false;
     bool densePartitionedPtHash = false;
@@ -62,6 +65,9 @@ int main(int argc, char** argv) {
     cmd.add_flag("rustPHast", rustPhastContender, "Execute all rust PHast benchmark");
     cmd.add_flag("rustPHastEF", rustPhastContenderEF, "Execute rust PHast with EF encoding benchmark");
     cmd.add_flag("rustPHastC", rustPhastContenderC, "Execute rust PHast with C encoding benchmark");
+    cmd.add_flag("rustPHastPlus", rustPhastPlusContender, "Execute all rust PHast+ benchmark");
+    cmd.add_flag("rustPHastPlusEF", rustPhastPlusContenderEF, "Execute rust PHast+ with EF encoding benchmark");
+    cmd.add_flag("rustPHastPlusC", rustPhastPlusContenderC, "Execute rust PHast+ with C encoding benchmark");
     cmd.add_flag("rustPtrHash", rustPtrHashContender, "Execute rust ptrhash benchmark");
     cmd.add_flag("rustPtrHashGx", rustPtrHashGxContender, "Execute rust ptrhash benchmark");
 
@@ -120,6 +126,49 @@ int main(int argc, char** argv) {
         //{RustPhastContender(N, 8, 430, false).run();} //3
         //{RustPhastContender(N, 8, 450, false).run();} //3
         //{RustPhastContender(N, 8, 460, false).run();} //3
+    }
+
+    if (all || most || rustPhastPlusContender || rustPhastPlusContenderEF) {
+        {RustPhastPlusContender(N, 8, 410, true).run();} //1
+        {RustPhastPlusContender(N, 8, 415, true).run();} //1
+        {RustPhastPlusContender(N, 8, 420, true).run();} //1
+        {RustPhastPlusContender(N, 8, 430, true).run();} //1
+        {RustPhastPlusContender(N, 8, 450, true).run();} //1
+        {RustPhastPlusContender(N, 8, 500, true).run();} //1
+
+        {RustPhastPlusContender(N, 9, 480, true).run();} //1
+        {RustPhastPlusContender(N, 9, 515, true).run();} //1
+        {RustPhastPlusContender(N, 9, 550, true).run();} //1
+
+        {RustPhastPlusContender(N, 10, 515, true).run();} //1
+        {RustPhastPlusContender(N, 10, 595, true).run();} //1
+
+        {RustPhastPlusContender(N, 11, 570, true).run();} //1 maybe 575
+        {RustPhastPlusContender(N, 11, 650, true).run();}
+
+        {RustPhastPlusContender(N, 12, 620, true).run();}
+        {RustPhastPlusContender(N, 12, 660, true).run();}
+
+
+        {RustPhastPlusWrappedContender(N, 1, 8, 415, 512, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 1, 8, 500, 512, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 1, 8, 430, 1024, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 1, 8, 470, 1024, true).run();} //1
+
+        {RustPhastPlusWrappedContender(N, 1, 9, 485, 0, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 1, 9, 550, 0, true).run();} //1
+
+        {RustPhastPlusWrappedContender(N, 1, 10, 580, 1024, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 1, 10, 620, 1024, true).run();} //1
+
+        {RustPhastPlusWrappedContender(N, 1, 10, 555, 2048, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 1, 10, 620, 2048, true).run();} //1
+
+        {RustPhastPlusWrappedContender(N, 1, 11, 610, 0, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 1, 11, 660, 0, true).run();} //1
+
+        {RustPhastPlusWrappedContender(N, 1, 12, 670, 0, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 1, 12, 710, 0, true).run();} //1
     }
 
     /*if (all || most || rustPtrHashContender) {
