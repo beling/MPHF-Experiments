@@ -22,20 +22,20 @@ pub extern "C" fn constructPhastPlus(struct_ptr: *mut PHastPlusVariant, keys_ptr
     *f = match (bits_per_seed, ef) {
         (8, true) => PHastPlusVariant::Bits8EF(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
-            seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnly::<1>
+            seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnly
         )),
         (_, true) => PHastPlusVariant::BitsEF(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
-            threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnly::<1>
+            threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnly
         )),
 
         (8, false) => PHastPlusVariant::Bits8C(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &Params::new(ph::seeds::Bits8, bucket_size100), threads_num,
-            seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnly::<1>
+            seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnly
         )),
         (_, false) => PHastPlusVariant::BitsC(phast::Function2::with_slice_p_threads_hash_sc(
             &keys[..], &phast::Params::new(ph::seeds::BitsFast(bits_per_seed), bucket_size100),
-            threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnly::<1>
+            threads_num, seedable_hash::BuildDefaultSeededHasher::default(), ShiftOnly
         )),
 
         _ => panic!("Wrong multiplier!")
