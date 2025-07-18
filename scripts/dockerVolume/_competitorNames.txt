@@ -14,6 +14,8 @@ RESULT store_code=SIMDRecSplit				store_name=SIMDRecSplit			showIn=legend			stor
 RESULT store_code=RustFmphContender			store_name=FMPH					showIn=legend			store_attr=mark=asterisk,color=colorRustFmph,solid
 RESULT store_code=RustFmphGoContender		store_name=FMPHGO				showIn=legend			store_attr=mark=diamond,color=colorRustFmphGo,solid
 RESULT store_code=RustPHast			store_name=PHast				showIn=legend		store_attr=mark=triangle,color=colorRustPHast,solid
+RESULT store_code=RustPHast+wrap			store_name=PHast+wrap				showIn=legend		store_attr=mark=asterisk,color=colorRustPHastPlusWrap,solid
+RESULT store_code=RustPHast+			store_name=PHast+				showIn=legend		store_attr=mark=triangle,color=colorRustPHastPlus,solid
 RESULT store_code=ShockHashSIMD				store_name=ShockHash-RS			showIn=legend			store_attr=mark=star,color=colorShockHash,solid
 RESULT store_code=BipartiteShockHash		store_name=Bip. ShockH-RS		showIn=legend			store_attr=mark=triangle,color=colorBipartiteShockHash,solid
 RESULT store_code=BipartiteShockHashFlat	store_name=Bip. ShockH-Flat		showIn=legend			store_attr=mark=10-pointed star,color=colorBipartiteShockHashFlat,densely dotted
@@ -23,3 +25,4 @@ RESULT store_code=MorphisHash				store_name=MorphisHash			showIn=legend			store_
 RESULT store_code=MorphisHashFlat			store_name=MorphisHash-Flat		showIn=legend			store_attr=mark=Mercedes star flipped,color=colorMorphisHashFlat
 RESULT store_code=Consensus					store_name=C\scalebox{0.8}{ONSENSUS}	showIn=legend	store_attr=mark=o,color=colorConsensus
 RESULT store_code=RustPtrHash				store_name=PtrHash				showIn=legend			store_attr=mark=Mercedes star,color=colorPtrHash
+RESULT store_code=RustPtrHashGx				store_name=PtrHash				showIn=legend			store_attr=mark=*,color=colorPtrHash
