@@ -143,7 +143,8 @@ int main(int argc, char** argv) {
         {RustPhastPlusContender(N, 10, 515, true).run();} //1
         {RustPhastPlusContender(N, 10, 595, true).run();} //1
 
-        {RustPhastPlusContender(N, 11, 570, true).run();} //1 maybe 575
+        {RustPhastPlusContender(N, 11, 570, true).run();}
+        {RustPhastPlusContender(N, 11, 575, true).run();}
         {RustPhastPlusContender(N, 11, 650, true).run();}
 
         {RustPhastPlusContender(N, 12, 620, true).run();}
@@ -169,6 +170,50 @@ int main(int argc, char** argv) {
 
         {RustPhastPlusWrappedContender(N, 1, 12, 670, 0, true).run();} //1
         {RustPhastPlusWrappedContender(N, 1, 12, 710, 0, true).run();} //1
+
+
+        {RustPhastPlusWrappedContender(N, 2, 8, 430, 0, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 2, 8, 435, 0, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 2, 8, 450, 0, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 2, 8, 470, 0, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 2, 8, 490, 0, true).run();} //1
+
+        {RustPhastPlusWrappedContender(N, 2, 9, 485, 1024, true).run();} //1   +- 5
+        {RustPhastPlusWrappedContender(N, 2, 9, 545, 1024, true).run();}
+        {RustPhastPlusWrappedContender(N, 2, 9, 550, 1024, true).run();}
+
+        {RustPhastPlusWrappedContender(N, 2, 9, 495, 2048, true).run();}
+        {RustPhastPlusWrappedContender(N, 2, 9, 500, 2048, true).run();}
+        {RustPhastPlusWrappedContender(N, 2, 9, 540, 2048, true).run();}
+
+        {RustPhastPlusWrappedContender(N, 2, 10, 555, 0, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 2, 10, 590, 0, true).run();}
+
+        {RustPhastPlusWrappedContender(N, 2, 11, 610, 0, true).run();}
+        {RustPhastPlusWrappedContender(N, 2, 11, 660, 0, true).run();}
+
+
+        {RustPhastPlusWrappedContender(N, 3, 8, 435, 0, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 3, 8, 480, 0, true).run();} //1
+
+        {RustPhastPlusWrappedContender(N, 3, 9, 485, 0, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 3, 9, 520, 0, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 3, 9, 525, 0, true).run();} //1
+
+        {RustPhastPlusWrappedContender(N, 3, 10, 555, 2048, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 3, 10, 580, 2048, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 3, 10, 600, 2048, true).run();} //1
+
+        {RustPhastPlusWrappedContender(N, 3, 10, 555, 4096, true).run();} //1
+        {RustPhastPlusWrappedContender(N, 3, 10, 575, 4096, true).run();}
+        {RustPhastPlusWrappedContender(N, 3, 10, 580, 4096, true).run();} //1   or 575
+
+        {RustPhastPlusWrappedContender(N, 3, 11, 600, 0, true).run();}
+        {RustPhastPlusWrappedContender(N, 3, 11, 610, 0, true).run();}
+        {RustPhastPlusWrappedContender(N, 3, 11, 640, 0, true).run();}
+
+        {RustPhastPlusWrappedContender(N, 3, 12, 680, 0, true).run();}
+        {RustPhastPlusWrappedContender(N, 3, 12, 710, 0, true).run();}
     }
 
     /*if (all || most || rustPtrHashContender) {
