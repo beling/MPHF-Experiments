@@ -116,7 +116,7 @@ int main(int argc, char** argv) {
         //{RustPhastContender(N, 11, 670, true).run();} //3
     
         //{RustPhastContender(N, 12, 680, true).run();}   // worse than (11, 630) //3
-        {RustPhastContender(N, 12, 700, true).run();} //2
+        //{RustPhastContender(N, 12, 700, true).run();} //3
         {RustPhastContender(N, 12, 720, true).run();} //2
     }
 
