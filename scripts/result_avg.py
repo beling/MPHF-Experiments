@@ -30,7 +30,7 @@ def add_results_from(file):
             if k in to_sum or k in to_avg or k in to_avg_round:
                 values[k] = Decimal(v)
             else:
-                if k: key += ' '
+                if k and key: key += ' '
                 key += kv
         if not extend and key not in results: continue
         res_val = results[key]
