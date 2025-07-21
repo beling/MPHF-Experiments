@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
         //{RustPhastPlusContender(N, 8, 450, true).run();} //4
         //{RustPhastPlusContender(N, 8, 500, true).run();} //4
 
-        {RustPhastPlusContender(N, 9, 480, true).run();} //2
+        //{RustPhastPlusContender(N, 9, 480, true).run();} //2
         //{RustPhastPlusContender(N, 9, 515, true).run();} //4
         //{RustPhastPlusContender(N, 9, 550, true).run();} //4
 
@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
         {RustPhastPlusContender(N, 11, 650, true).run();}
 
         {RustPhastPlusContender(N, 12, 620, true).run();}
-        {RustPhastPlusContender(N, 12, 660, true).run();}
+        //{RustPhastPlusContender(N, 12, 660, true).run();} //2
 
 
         //{RustPhastPlusWrappedContender(N, 1, 8, 415, 512, true).run();} //4
@@ -181,17 +181,17 @@ int main(int argc, char** argv) {
         //{RustPhastPlusWrappedContender(N, 2, 10, 555, 0, true).run();} //4
         {RustPhastPlusWrappedContender(N, 2, 10, 590, 0, true).run();} //2
 
-        {RustPhastPlusWrappedContender(N, 2, 11, 610, 0, true).run();}
+        //{RustPhastPlusWrappedContender(N, 2, 11, 610, 0, true).run();}    //4
 
 
         {RustPhastPlusWrappedContender(N, 3, 8, 435, 0, true).run();} //1
-        {RustPhastPlusWrappedContender(N, 3, 8, 480, 0, true).run();} //1
+        //{RustPhastPlusWrappedContender(N, 3, 8, 480, 0, true).run();} //3
 
-        {RustPhastPlusWrappedContender(N, 3, 9, 485, 0, true).run();} //1
+        //{RustPhastPlusWrappedContender(N, 3, 9, 485, 0, true).run();} //3
         //{RustPhastPlusWrappedContender(N, 3, 9, 520, 0, true).run();} //4
         {RustPhastPlusWrappedContender(N, 3, 9, 525, 0, true).run();} //2
 
-        {RustPhastPlusWrappedContender(N, 3, 10, 555, 2048, true).run();} //1
+        //{RustPhastPlusWrappedContender(N, 3, 10, 555, 2048, true).run();} //3
         //{RustPhastPlusWrappedContender(N, 3, 10, 580, 2048, true).run();} //4
         //{RustPhastPlusWrappedContender(N, 3, 10, 600, 2048, true).run();} //3
 
@@ -199,7 +199,7 @@ int main(int argc, char** argv) {
         //{RustPhastPlusWrappedContender(N, 3, 10, 575, 4096, true).run();} //4
         //{RustPhastPlusWrappedContender(N, 3, 10, 580, 4096, true).run();} //4
 
-        {RustPhastPlusWrappedContender(N, 3, 11, 600, 0, true).run();}
+        //{RustPhastPlusWrappedContender(N, 3, 11, 600, 0, true).run();} //3
 
         //{RustPhastPlusWrappedContender(N, 3, 12, 680, 0, true).run();} //4
     }
