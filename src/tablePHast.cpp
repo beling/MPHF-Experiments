@@ -204,6 +204,16 @@ int main(int argc, char** argv) {
         //{RustPhastPlusWrappedContender(N, 3, 12, 680, 0, true).run();} //4
     }
 
+    if (all || most || rustPhastPlusContender || rustPhastPlusContenderC) {
+        {RustPhastPlusWrappedContender(N, 2, 8, 410, 0, false).run();} //1
+        {RustPhastPlusWrappedContender(N, 2, 8, 415, 0, false).run();} //1
+        {RustPhastPlusWrappedContender(N, 2, 8, 420, 0, false).run();} //1
+        {RustPhastPlusWrappedContender(N, 3, 8, 410, 0, false).run();} //1
+        {RustPhastPlusWrappedContender(N, 3, 8, 415, 0, false).run();} //1
+        {RustPhastPlusWrappedContender(N, 3, 8, 420, 0, false).run();} //1
+        //{RustPhastPlusWrappedContender(N, 1, 12, 670, 0, false).run();} //3??
+    }
+
     /*if (all || most || rustPtrHashContender) {
         {RustPtrHashContender(N, RustPtrHashContender::VARIANT_LINEAR_VEC, 3.0).run();} // Fast
         //{RustPtrHashContender(N, RustPtrHashContender::VARIANT_LINEAR_EF, 3.0).run();}  //2

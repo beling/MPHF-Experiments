@@ -9,8 +9,8 @@ crate-type = ["staticlib"]
 
 [dependencies]
 libc = "0.2"
-ph = { version = "0.9", features = ["gxhash"], path="/home/qwak/prog/bsuccinct-rs/ph" } #
-seedable_hash = { version = "0.2", features = ["gxhash"], path="/home/qwak/prog/bsuccinct-rs/seedable_hash" } #
+ph = { version = "0.10", features = ["gxhash"], path="../../../bsuccinct-rs/ph" } #
+seedable_hash = { version = "0.2", features = ["gxhash"], path="../../../bsuccinct-rs/seedable_hash" } #
 mem_dbg = "0.3"
 ptr_hash = "1.1"
 gxhash = "3.5"
