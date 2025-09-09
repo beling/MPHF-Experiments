@@ -1,7 +1,11 @@
-# MPHF-Experiments
+# MPHF-Experiments (fork with with PHast+ support)
 
-Comparison of a wide range different minimal perfect hash functions (MPHFs).
+This is a fork of [MPHF-Experiments](https://github.com/ByteHamster/MPHF-Experiments) that supports more PHast variants, including PHast+.
+[MPHF-Experiments](https://github.com/ByteHamster/MPHF-Experiments) is framework for comparison of a wide range different minimal perfect hash functions (MPHFs).
 From these, it can generate comprehensive plots like Pareto plots, and simple comparison tables used in several papers.
+
+This fork was used to conduct experiments for the paper *PHast - Perfect Hashing made fast* by *Piotr Beling* and *Peter Sanders*, accepted for the [ALENEX26](https://www.siam.org/conferences-events/siam-conferences/alenex26/) conference.
+[This document](#reproducing-results-from-the-paper-phast---perfect-hashing-made-fast) contains detailed instructions for reproducing the results of these experiments.
 
 <img src="img/preview-dominance-map.png" width="500"/>
 
@@ -47,10 +51,10 @@ This repository contains submodules.
 To clone the repository including submodules, use the following command.
 
 ```
-git clone --recursive https://github.com/ByteHamster/MPHF-Experiments.git
+git clone --recursive https://github.com/beling/MPHF-Experiments.git
 ```
 
-### Running the Experiments Directly
+### Compiling and Running the Experiments Directly
 
 Compiling works like with every cmake project.
 
@@ -61,6 +65,51 @@ cmake --build ./build -j
 
 This might take about 5-15 minutes because of the large number of competitors.
 You can then run one of the benchmarks, for example `./build/TablePtrHash --help` or `./build/Comparison --help`.
+
+### Reproducing results from the paper *PHast - Perfect Hashing made fast*
+
+First, [clone the repository](#cloning-the-repository), [compile the software](#compiling-and-running-the-experiments-directly), and change to `build` directory: `cd ./build`
+
+Data for plots (for 50M keys and single thread) can be obtained using the `Comparison` program. It can be run separately for individual algorithms (note that all these calculations may take several days):
+``` sh
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --rustPHastPlusWrapEF
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --rustPHastPlusWrapC
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --rustPHastPlusEF
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --rustPHastPlusC
+
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --rustPtrHashGx
+
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --rustFmph
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --rustFmphGo
+
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --minimalOnly --loadFactor 0.9 --pthash
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --minimalOnly --loadFactor 0.9 --partitionedPthash
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --minimalOnly --loadFactor 0.95 --pthash
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --minimalOnly --loadFactor 0.95 --partitionedPthash
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --minimalOnly --loadFactor 0.97 --pthash
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --minimalOnly --loadFactor 0.97 --partitionedPthash
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --densePartitionedPtHash
+
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --bipartiteShockHashFlat
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --bipartiteShockHash
+
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --minimalOnly --loadFactor 0.9 --sichash
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --minimalOnly --loadFactor 0.95 --sichash
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --minimalOnly --loadFactor 0.97 --sichash
+
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --simdrecsplit
+
+./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --fiPS
+```
+
+Notes:
+- thanks to `--seed 1234` (another seed can also be used), each algorithm works on exactly the same set of pseudo-random keys;
+- `--numQueries 3` averages the query time over 3 runs, each over all keys;
+- to obtain results for multiple threads, simply change the `--numThreads` parameter to the desired number of threads;
+- the results of the runs can be redirected to files using standard shell mechanisms (by adding `>> filename.txt` or `| tee -a filename.txt` at the end of each line).
+
+
+
 
 ### Code Structure
 
