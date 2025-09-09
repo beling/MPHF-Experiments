@@ -68,7 +68,10 @@ You can then run one of the benchmarks, for example `./build/TablePtrHash --help
 
 ### Reproducing results from the paper *PHast - Perfect Hashing made fast*
 
-First, [clone the repository](#cloning-the-repository), [compile the software](#compiling-and-running-the-experiments-directly), and change to `build` directory: `cd ./build`
+First, [clone the repository](#cloning-the-repository), [compile the software](#compiling-and-running-the-experiments-directly), and change to `build` directory:
+``` sh
+cd ./build
+```
 
 Data for plots (for 50M keys and single thread) can be obtained using the `Comparison` program. It can be run separately for individual algorithms (note that all these calculations may take several days):
 ``` sh
@@ -102,13 +105,27 @@ Data for plots (for 50M keys and single thread) can be obtained using the `Compa
 ./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --fiPS
 ```
 
-Notes:
-- thanks to `--seed 1234` (another seed can also be used), each algorithm works on exactly the same set of pseudo-random keys;
-- `--numQueries 3` averages the query time over 3 runs, each over all keys;
-- to obtain results for multiple threads, simply change the `--numThreads` parameter to the desired number of threads;
-- the results of the runs can be redirected to files using standard shell mechanisms (by adding `>> filename.txt` or `| tee -a filename.txt` at the end of each line).
+Notes: thanks to `--seed 1234` (another seed can also be used), each algorithm works on exactly the same set of pseudo-random keys;
+`--numQueries 3` averages the query time over 3 runs, each over all keys.
 
+To obtain results for multiple threads, simply change the `--numThreads` parameter to the desired number of threads.
 
+The results of the runs can be placed in files using standard shell mechanisms (by adding `>> filename.txt` or `| tee -a filename.txt` at the end of each line).
+
+Data for tables (for 50M and 500M keys) can be obtained using the `TablePHast` program, either separately for individual algorithms (run `./TablePHast --help` for more details) or for all at once by:
+
+``` sh
+./TablePHast --seed 1234 --numKeys 50M --numThreads 1 --numQueries 10 --all
+./TablePHast --seed 1234 --numKeys 500M --numThreads 1 --numQueries 10 --all
+```
+
+Again, the results can be placed in files using standard shell mechanisms.
+
+The measured times can be averaged over several runs with different seeds (in the paper, we used the seeds: `1234`, `2345`, `3456`, `4567`) with the `result_avg.py` ([python](https://www.python.org/)) script, which can be found in the `scripts` directory:
+
+``` sh
+python ../scripts/result_avg.py results_50M_1234.txt results_50M_2345.txt results_50M_3456.txt results_50M_4567.txt > results_50M_avg.txt
+```
 
 
 ### Code Structure
