@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage[a4paper, margin=2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{xspace}
+\usepackage{booktabs}
+\usepackage{dsfont}
+\usepackage{footmisc}
+\usepackage{marvosym}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{multirow}
+\usepackage{graphicx}
+
+\title{MPHF table}
+\date{}
+\begin{document}
+
+\addtolength\tabcolsep{-0.5pt}
+\newcommand{\mr}[1]{\multirow{2}{*}{#1}}
+\begin{centering}
+\begin{tabular}[t]{ll rrrrr}
+    \toprule
+    Method & Configuration & Space      & Query      & \multicolumn{3}{c}{Construction [ns/key]} \\
+    \cline{5-7}
+             &               & [bit/key] & [ns/query] & 1 thread & 12 threads & speedup \\ \midrule
+    % IMPORT-DATA st table-ST.txt
+    % IMPORT-DATA mt table-MT.txt
+    % SQL DELETE FROM st WHERE name != "RustPHast+wrap"
+    % SQL DELETE FROM mt WHERE name != "RustPHast+wrap"
+    %% TABULAR REFORMAT(col 1=(precision=2))
+    %% SELECT
+    %%    CASE
+    %%      WHEN st.name=="SIMDRecSplit"           THEN IIF(st.l==5,"\mr{SIMDRecSplit}", "")         || "& $n$=$" || st.l || "$, $b$=$" || st.b || "$"
+    %%      WHEN st.name=="ShockHashSIMD"          THEN IIF(st.l==40,"\mr{ShockHash-RS}", "")        || "& $n$=$" || st.l || "$, $b$=$" || st.b || "$"
+    %%      WHEN st.name=="BipartiteShockHash"     THEN IIF(st.l==64,"\mr{Bip. ShockHash-RS}", "")   || "& $n$=$" || st.l || "$, $b$=$" || st.b || "$"
+    %%      WHEN st.name=="BipartiteShockHashFlat" THEN IIF(st.l==64,"\mr{Bip. ShockHash-Flat}", "") || "& $n$=$" || st.l || "$"
+    %%      WHEN st.name=="PTHash"                 THEN IIF(st.lambda==4.0,"\mr{PTHash}", "")           || "& $\lambda$=$" || st.lambda || "$, $\alpha$=$" || st.lf || "$, " || st.encoder
+    %%      WHEN st.name=="PartitionedPTHash"      THEN IIF(st.lambda==4.0,"\mr{PTHash-HEM}", "")       || "& $\lambda$=$" || st.lambda || "$, $\alpha$=$" || st.lf || "$, " || st.encoder
+    %%      WHEN st.name=="DensePartitionedPTHash" THEN IIF(st.lambda==3.9,"\mr{PHOBIC}", "") || "& $\lambda$=$" || st.lambda || "$, $\alpha$=$" || st.lf || "$, " || IIF(st.encoder=="inter-R", "IC-R", IIF(st.encoder=="inter-C", "IC-C", st.encoder))
+    %%      WHEN st.name=="BBHash"                 THEN IIF(st.gamma==2.0,"\mr{BBHash}", "")         || "& $\gamma$=$" || st.gamma || "$"
+    %%      WHEN st.name=="RustFmphContender"      THEN IIF(st.gamma==2.0,"\mr{FMPH}", "")           || "& $\gamma$=$" || st.gamma || "$"
+    %%      WHEN st.name=="RustFmphGoContender"    THEN IIF(st.gamma==2.0,"\mr{FMPHGO}", "")         || "& $\gamma$=$" || st.gamma || ", s$=$4, b$=$16$"
+    %%      WHEN st.name=="FiPS"                   THEN IIF(st.gamma==2.0,"\mr{FiPS}", "")           || "& $\gamma$=$" || st.gamma || "$"
+    %%      WHEN st.name=="RustPHast"              THEN IIF(st.bucket_size100==320,"\mr{PHast}", "")  || "& $S$=$" || st.bits_per_seed || "$, $\lambda$=$" || ROUND(CAST(st.bucket_size100 as float)/100, 2) || "$, " || st.encoder
+    %%      WHEN st.name=="RustPHast+"              THEN IIF(st.bucket_size100==320,"\mr{PHast+s}", "")  || "& $S$=$" || st.bits_per_seed || "$, $\lambda$=$" || ROUND(CAST(st.bucket_size100 as float)/100, 2) || "$, " || st.encoder
+    %%      WHEN st.name=="RustPHast+wrap"              THEN IIF(st.bucket_size100==320,"\mr{PHast+w}", "")  || "& $\delta$=$" || st.multiplier || "$, $S$=$" || st.bits_per_seed || "$, $\lambda$=$" || ROUND(CAST(st.bucket_size100 as float)/100, 2) || "$, " || st.encoder || " " || st.preferred_slice_len
+    %%      WHEN st.name=="RustPtrHash"              THEN IIF(st.lambda==3,"\mr{PtrHash}", "")  || "& $\lambda$=$" || st.lambda || "$, $\alpha$=$0.99$, " || IIF(MOD(st.variant-1, 3)==0, "linear", IIF(MOD(st.variant-1, 3)==1, "square", "cubic")) || ", " || IIF(st.variant>3, "cEF", "Vec")
+    %%      WHEN st.name=="RustPtrHashGx"            THEN IIF(st.lambda==3,"\mr{PtrHash GX}", "")  || "& $\lambda$=$" || st.lambda || "$, $\alpha$=$0.99$, " || IIF(MOD(st.variant-1, 3)==0, "linear", IIF(MOD(st.variant-1, 3)==1, "square", "cubic")) || ", " || IIF(st.variant>3, "cEF", "Vec")
+    %%      WHEN st.name=="SicHash"                THEN IIF(st.lf==0.9,"\mr{SicHash}", "")          || "& $\alpha$=$" || st.lf || "$, $p_1$=$" || CAST(ROUND(100*st.t1) AS INT) || "\%$, $p_2$=$" || CAST(ROUND(100*st.t2) AS INT) || "\%$"
+    %%      ELSE (st.name || "&?")
+    %%    END AS method,
+    %%    ROUND((st.bitsPerElement+mt.bitsPerElement)*0.5, 2),
+    %%    CAST(ROUND(1000000.0*(st.queryTimeMilliseconds+mt.queryTimeMilliseconds)/(st.numQueries+mt.numQueries), 0) AS INT),
+    %%    CAST(ROUND(1000000.0*st.constructionTimeMilliseconds/st.N, 0) AS INT),
+    %%    CAST(ROUND(1000000.0*mt.constructionTimeMilliseconds/mt.N, 0) AS INT),
+    %%    ROUND(CAST(st.constructionTimeMilliseconds AS float)/CAST(mt.constructionTimeMilliseconds as float), 1)
+    %% FROM st FULL JOIN mt ON st.name=mt.name AND st.l IS mt.l AND st.lambda IS mt.lambda AND st.lf IS mt.lf AND st.gamma IS mt.gamma AND st.bucket_size100 IS mt.bucket_size100 AND st.t1 IS mt.t1 AND st.t2 IS mt.t2 AND st.variant IS mt.variant AND st.encoder IS mt.encoder AND st.b IS mt.b AND st.bits_per_seed IS mt.bits_per_seed AND st.multiplier IS mt.multiplier AND st.preferred_slice_len IS mt.preferred_slice_len
+    %% ORDER BY st.name, -st.bitsPerElement
+    \bottomrule
+\end{tabular}
+\end{centering}
+
+\end{document}
+

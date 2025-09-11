@@ -131,6 +131,18 @@ python ../scripts/result_avg.py results_50M_1234.txt results_50M_2345.txt result
 
 The remaining experiments were performed using [mphf_benchmark](https://crates.io/crates/mphf_benchmark) program. Its [documentation](https://docs.rs/crate/mphf_benchmark/) describes [how to reproduce them](https://github.com/beling/bsuccinct-rs/blob/main/mphf_benchmark/README.md#phast----perfect-hashing-made-fast).
 
+The results obtained can be formatted into LaTeX files using: [sqlplot-tools](https://github.com/bingmann/sqlplot-tools), script and templates contained in the `scripts/phast` folder.
+The [README](https://github.com/bingmann/sqlplot-tools/blob/master/README.md) file of [sqlplot-tools](https://github.com/bingmann/sqlplot-tools) contains instructions for [downloading](https://github.com/bingmann/sqlplot-tools/blob/master/README.md#downloads) and [compiling](https://github.com/bingmann/sqlplot-tools/blob/master/README.md#compilation) it. To use our scripts, copy the `sqlplot-tools` executable to `scripts/phast`.
+
+To create a LaTeX files with plots presenting the benchmark results and compile them into PDF files:
+- put the single-threaded results in the `ST50M.txt` file and multithreaded results in `MT50M.txt` (place both files in the `scripts/phast` folder);
+- (in the `scripts/phast` folder) run the `plot-phast.sh` script (which changes `ST50M.tex` and `MT50M.tex` files).
+
+To create a LaTeX file with a table presenting the benchmark results and compile it into a PDF file:
+- put the single-threaded results in the `table-ST.txt` file and multithreaded results (for the same number of keys) in `table-MT.txt` (place both files in the `scripts/phast` folder);
+- (in the `scripts/phast` folder) run the `table-phast.sh` script (which uses and changes `table-phast.tex` file).
+
+
 
 ### Code Structure
 
