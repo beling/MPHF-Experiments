@@ -68,12 +68,14 @@ You can then run one of the benchmarks, for example `./build/TablePtrHash --help
 
 ### Reproducing results from the paper *PHast - Perfect Hashing made fast*
 
+(Piotr Beling, Peter Sanders, *PHast -- Perfect Hashing made fast*, SIAM Symposium on Algorithm Engineering and Experiments ALENEX26, 2026; [preprint available on arXiv](https://arxiv.org/abs/2504.17918))
+
 First, [clone the repository](#cloning-the-repository), [compile the software](#compiling-and-running-the-experiments-directly), and change to `build` directory:
 ``` sh
 cd ./build
 ```
 
-Data for plots (for 50M keys and single thread) can be obtained using the `Comparison` program. It can be run separately for individual algorithms (note that all these calculations may take several days):
+Data for plots, for *50M* keys (`--numKeys 50M`) and single thread (`--numThreads 1`) can be obtained using the `Comparison` program. It can be run separately for individual algorithms (note that all these calculations may take several days):
 ``` sh
 ./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --rustPHastPlusWrapEF
 ./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --rustPHastPlusWrapC
@@ -126,6 +128,8 @@ The measured times can be averaged over several runs with different seeds (in th
 ``` sh
 python ../scripts/result_avg.py results_50M_1234.txt results_50M_2345.txt results_50M_3456.txt results_50M_4567.txt > results_50M_avg.txt
 ```
+
+The remaining experiments were performed using [mphf_benchmark](https://crates.io/crates/mphf_benchmark) program. Its [documentation](https://docs.rs/crate/mphf_benchmark/) describes [how to reproduce them](https://github.com/beling/bsuccinct-rs/blob/main/mphf_benchmark/README.md#phast----perfect-hashing-made-fast).
 
 
 ### Code Structure
