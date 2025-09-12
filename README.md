@@ -56,7 +56,9 @@ git clone --recursive https://github.com/beling/MPHF-Experiments.git
 
 ### Compiling and Running the Experiments Directly
 
-Compiling works like with every cmake project.
+C++ and [Rust](https://www.rust-lang.org/) compilers are required to build the project. The easiest way to obtain the Rust compiler along with other necessary tools (like `cargo`) is to use [rustup](https://www.rust-lang.org/tools/install). Please follow the instructions at https://www.rust-lang.org/tools/install.
+
+Once compilers are installed, compiling works like with every cmake project.
 
 ```
 cmake -B ./build -DCMAKE_BUILD_TYPE=Release
@@ -64,7 +66,7 @@ cmake --build ./build -j
 ```
 
 This might take about 5-15 minutes because of the large number of competitors.
-You can then run one of the benchmarks, for example `./build/TablePtrHash --help` or `./build/Comparison --help`.
+You can then run one of the benchmarks, for example `./build/TablePHast --help` or `./build/Comparison --help`.
 
 ### Reproducing results from the paper *PHast - Perfect Hashing made fast*
 
