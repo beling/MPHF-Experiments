@@ -137,7 +137,7 @@ The results obtained can be formatted into LaTeX files using: [sqlplot-tools](ht
 The [README](https://github.com/bingmann/sqlplot-tools/blob/master/README.md) file of [sqlplot-tools](https://github.com/bingmann/sqlplot-tools) contains instructions for [downloading](https://github.com/bingmann/sqlplot-tools/blob/master/README.md#downloads) and [compiling](https://github.com/bingmann/sqlplot-tools/blob/master/README.md#compilation) it. To use our scripts, copy the `sqlplot-tools` executable to `scripts/phast`.
 
 To create a LaTeX files with plots presenting the benchmark results and compile them into PDF files:
-- put the single-threaded results in the `ST50M.txt` file and multithreaded results in `MT50M.txt` (place both files in the `scripts/phast` folder);
+- put the single-threaded results in the `ST50M.txt` file and multithreaded results in `MT50M.txt` (place these both files and also `scripts/dockerVolume/_competitorNames.txt` in the `scripts/phast` folder);
 - (in the `scripts/phast` folder) run the `plot-phast.sh` script (which changes `ST50M.tex` and `MT50M.tex` files).
 
 To create a LaTeX file with a table presenting the benchmark results and compile it into a PDF file:
