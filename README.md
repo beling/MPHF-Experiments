@@ -1,4 +1,4 @@
-# MPHF-Experiments (fork with with PHast+ support)
+# MPHF-Experiments (fork with PHast+ support)
 
 This is a fork of [MPHF-Experiments](https://github.com/ByteHamster/MPHF-Experiments) that supports more PHast variants, including PHast+.
 [MPHF-Experiments](https://github.com/ByteHamster/MPHF-Experiments) is framework for comparison of a wide range different minimal perfect hash functions (MPHFs).
@@ -158,7 +158,7 @@ If you want to add a new comparison table, make sure to also adapt the [`CMakeLi
 
 ### Running the Experiments with Docker
 
-For easier reproducibility and less setup overhead, we provide a docker image to run some of the experiments.
+For easier reproducibility and less setup overhead, we provide a docker image to run some of the experiments (but none from the PHast paper).
 However, for the measurements in the papers, we run the code directly and with more data points.
 We refer to [Docker.md](/Docker.md) for details on how to use this repository with Docker.
 
