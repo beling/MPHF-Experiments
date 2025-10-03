@@ -1,4 +1,4 @@
-# MPHF-Experiments (fork with with PHast+ support)
+# MPHF-Experiments (fork with PHast+ support)
 
 This is a fork of [MPHF-Experiments](https://github.com/ByteHamster/MPHF-Experiments) that supports more PHast variants, including PHast+.
 [MPHF-Experiments](https://github.com/ByteHamster/MPHF-Experiments) is framework for comparison of a wide range different minimal perfect hash functions (MPHFs).
