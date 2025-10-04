@@ -93,7 +93,7 @@
 
 % IMPORT-DATA competitorNames _competitorNames.txt
 % IMPORT-DATA inputData MT50M.txt
-% SQL DELETE FROM inputData WHERE threads != 12 OR loadFactor != 1.0
+% SQL DELETE FROM inputData WHERE loadFactor != 1.0
 % SQL DELETE FROM inputData WHERE name = "PartitionedPTHash"
 % SQL DELETE FROM inputData WHERE name = "ShockHashSIMD"
 % SQL DELETE FROM inputData WHERE constructionTimeMilliseconds > 5000000
