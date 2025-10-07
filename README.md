@@ -186,7 +186,7 @@ We refer to [Docker.md](/Docker.md) for details on how to use this repository wi
 
 ### Compilation problems
 
-If, despite having the `tbb` library in the (linux) system, `cmake` cannot find it (and compile `ShockHash`): download https://github.com/justusc/FindTBB/blob/master/FindTBB.cmake to the `extlib/ShockHash` directory and change `extlib/ShockHash/CMakeLists.txt`:
+If, despite having the `tbb` library in the (linux) system, `cmake` cannot find it (and compile `ShockHash`): download https://github.com/justusc/FindTBB/blob/master/FindTBB.cmake to the `extlib/ShockHash` directory and modify `extlib/ShockHash/CMakeLists.txt`:
 ``` diff
  if(NOT TARGET simpleRibbon)
      set(IPS2RA_DISABLE_PARALLEL ON CACHE PATH "ips2ra's FindTBB greps a file that does not exist in recent TBB versions")
