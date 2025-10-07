@@ -80,7 +80,7 @@ First, [clone the repository](#cloning-the-repository), [compile the software](#
 cd ./build
 ```
 
-Data for plots, for *50M* keys (`--numKeys 50M`) and single thread (`--numThreads 1`) can be obtained using the `Comparison` program. It can be run separately for individual algorithms (note that all these calculations may take several days):
+Data for plots, for *50M* keys (`--numKeys 50M`) and single thread (`--numThreads 1`) can be obtained using the `Comparison` program. It can be run separately for individual algorithms (note that all these calculations may take several days - see also [methods for accelerating calculations](#faster-reproduction-of-results)):
 ``` sh
 ./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --rustPHastPlusWrapEF
 ./Comparison --seed 1234 --numKeys 50M --numThreads 1 --numQueries 3 --rustPHastPlusWrapC
@@ -117,7 +117,7 @@ Notes: thanks to `--seed 1234` (another seed can also be used), each algorithm w
 
 To obtain results for multiple threads, simply change the `--numThreads` parameter to the desired number of threads.
 
-The results of the runs can be placed in files using standard shell mechanisms (by adding `>> filename.txt` or `| tee -a filename.txt` at the end of each line).
+The results of the runs can be placed in files using standard shell mechanisms (by adding `>> filename.txt` or `| tee -a filename.txt` at the end of each line; we recommend using `ST50M` or `MT50M` as `filename`).
 
 Data for tables (for 50M and 500M keys) can be obtained using the `TablePHast` program, either separately for individual algorithms (run `./TablePHast --help` for more details) or for all at once by:
 
@@ -147,7 +147,26 @@ To create a LaTeX file with a table presenting the benchmark results and compile
 - put the single-threaded results in the `table-ST.txt` file and multithreaded results (for the same number of keys) in `table-MT.txt` (place both files in the `scripts/phast` folder);
 - (in the `scripts/phast` folder) run the `table-phast.sh` script (which uses and changes `table-phast.tex` file).
 
+### Faster reproduction of results
 
+To obtain experiment results faster, but at the cost of greater noise (greater randomness in the measured running time), you can:
+1. Change `--numQueries` to `1`.
+2. Remove `usleep` calls from `lib/Contender.cpp` or decrease the sleep times.
+3. Change `--numKeys` from `50M` to for example `20M` or even `10M` (This has a great impact on the measured times, but should not significantly affect the size of MPHFs in bits/key.)
+4. Run processes in parallel. This can be done with the [GNU parallel](https://www.gnu.org/software/parallel/) program (see [1](https://www.gnu.org/software/parallel/parallel_tutorial.html) and [2](https://stackoverflow.com/questions/78164333/how-to-use-gnu-parallel-to-run-a-list-of-command-in-a-file)) as follows: place the commands to be executed in the `file_with_processes_to_run` file and run (change `8` to number of cores in your CPU):
+
+    ```sh
+    parallel -k -j8 < file_with_processes_to_run > output_file.txt
+    ```
+
+    or (to see the output also in terminal):
+
+    ```sh
+    parallel -k -j8 < file_with_processes_to_run | tee output_file.txt
+    ```
+
+    (thanks to `-k`, process outputs will not be mixed up in `output_file.txt`)
+5. Skip some contenders (the corresponding curve will simply not appear on the plot).
 
 ### Code Structure
 
@@ -167,7 +186,7 @@ We refer to [Docker.md](/Docker.md) for details on how to use this repository wi
 
 ### Compilation problems
 
-If, despite having the `tbb` library in the (linux) system, `cmake` cannot find it (and compile `ShockHash`): download https://github.com/justusc/FindTBB/blob/master/FindTBB.cmake to the `extlib/ShockHash` directory and change `CMakeLists.txt`:
+If, despite having the `tbb` library in the (linux) system, `cmake` cannot find it (and compile `ShockHash`): download https://github.com/justusc/FindTBB/blob/master/FindTBB.cmake to the `extlib/ShockHash` directory and change `extlib/ShockHash/CMakeLists.txt`:
 ``` diff
  if(NOT TARGET simpleRibbon)
      set(IPS2RA_DISABLE_PARALLEL ON CACHE PATH "ips2ra's FindTBB greps a file that does not exist in recent TBB versions")
