@@ -68,6 +68,9 @@ cmake --build ./build -j
 This might take about 5-15 minutes because of the large number of competitors.
 You can then run one of the benchmarks, for example `./build/TablePHast --help` or `./build/Comparison --help`.
 
+If you encounter problems, see the section on [compilation issues](#compilation-problems).
+
+
 ### Reproducing results from the paper *PHast - Perfect Hashing made fast*
 
 (Piotr Beling, Peter Sanders, *PHast -- Perfect Hashing made fast*, SIAM Symposium on Algorithm Engineering and Experiments ALENEX26, 2026; [preprint available on arXiv](https://arxiv.org/abs/2504.17918))
@@ -161,6 +164,21 @@ If you want to add a new comparison table, make sure to also adapt the [`CMakeLi
 For easier reproducibility and less setup overhead, we provide a docker image to run some of the experiments (but none from the PHast paper).
 However, for the measurements in the papers, we run the code directly and with more data points.
 We refer to [Docker.md](/Docker.md) for details on how to use this repository with Docker.
+
+### Compilation problems
+
+If, despite having the `tbb` library in the (linux) system, `cmake` cannot find it (and compile `ShockHash`): download https://github.com/justusc/FindTBB/blob/master/FindTBB.cmake to the `extlib/ShockHash` directory and change `CMakeLists.txt`:
+``` diff
+ if(NOT TARGET simpleRibbon)
+     set(IPS2RA_DISABLE_PARALLEL ON CACHE PATH "ips2ra's FindTBB greps a file that does not exist in recent TBB versions")
+     add_subdirectory(extlib/simpleRibbon SYSTEM EXCLUDE_FROM_ALL)
++    list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/")
+     find_package(TBB)
+     target_compile_options(ips2ra INTERFACE -D_REENTRANT)
+-    target_link_libraries(ips2ra INTERFACE pthread atomic TBB::tbb)
++    target_link_libraries(ips2ra INTERFACE pthread atomic tbb)
+ endif()
+```
 
 ### License
 
