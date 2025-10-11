@@ -147,7 +147,7 @@ To create a LaTeX file with a table presenting the benchmark results and compile
 - put the single-threaded results in the `table-ST.txt` file and multithreaded results (for the same number of keys) in `table-MT.txt` (place both files in the `scripts/phast` folder);
 - (in the `scripts/phast` folder) run the `table-phast.sh` script (which uses and changes `table-phast.tex` file).
 
-Software version notes: We conducted our experiments on Debian 12 bookworm (running on a computer with AMD Ryzen 5600G and 64GB of RAM), with gcc 12.2.0, rust 1.84.1, CMake 3.31.6, tbb 2021.8.0, sqlplot-tools commit a0c3ba6 at 2025-05-10. However, many other configurations are also supported. For example, experiments were successfully reproduced on: Ubuntu 22.04.5 LTS (using Intel(R) Xeon(R) Gold 6148 CPU) and also ArchLinux (rolling updated to 2025-10-06; using Intel Xeon Gold 6230 CPU ×2) with gcc 15.2.1, rust 1.90.0, CMake 4.1.2, oneTBB 2022.2.0 (with [workaround](#compilation-problems)), sqlplot-tools commit a0c3ba6 at 2025-05-10.
+Software version notes: We conducted our experiments on Debian 12 bookworm (running on a computer with AMD Ryzen 5600G and 64GB of RAM), with gcc 12.2.0, rust 1.84.1, CMake 3.31.6, tbb 2021.8.0, sqlplot-tools commit 7d2202b at 2024-08-15. However, many other configurations are also supported. For example, experiments were successfully reproduced on: Ubuntu 22.04.5 LTS (using Intel(R) Xeon(R) Gold 6148 CPU) and also ArchLinux (rolling updated to 2025-10-06; using Intel Xeon Gold 6230 CPU ×2) with gcc 15.2.1, rust 1.90.0, CMake 4.1.2, oneTBB 2022.2.0 (with [workaround](#compilation-problems)), sqlplot-tools commit a0c3ba6 at 2025-05-10.
 
 ### Faster reproduction of results
 
